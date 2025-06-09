@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {BookingService} from '../../services/booking.service';
@@ -8,20 +8,24 @@ import {Accessory} from '../../interfaces/accessories';
 import {Insurance} from '../../interfaces/insurance';
 import {Booking} from '../../interfaces/booking';
 import {Router} from '@angular/router';
+import {forkJoin} from 'rxjs';
+import { delay, finalize } from 'rxjs/operators';
 
 interface ReservationStep {
   label: string;
 }
 
-export type PaymentMethod = 'onPickup' | 'paypal' | 'card';
-
 @Component({
   selector: 'app-booking',
   standalone: false,
   templateUrl: './booking.component.html',
-  styleUrls: ['./booking.component.scss']
+  styleUrls: ['./booking.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class BookingComponent implements OnInit{
+  isLoggedIn = !!localStorage.getItem('authToken');
+  loading = true;
+
   steps: ReservationStep[] = [
     { label: 'Step 1' },
     { label: 'Step 2' },
@@ -45,6 +49,12 @@ export class BookingComponent implements OnInit{
   ) {
     this.bookingForm = this.fb.group({
       // STEP 1
+      guestEmail: [
+        null,
+        this.isLoggedIn
+          ? []
+          : [Validators.required, Validators.email]
+      ],
       pickupLocation: [null, Validators.required],
       dropoffLocation: [null, Validators.required],
       pickupDate: [null, Validators.required],
@@ -61,17 +71,32 @@ export class BookingComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.bookingSrv.getLocations().subscribe(locs => this.locations = locs);
-    this.bookingSrv.getBikeTypes().subscribe(types => this.bikeTypes = types);
-    this.bookingSrv.getInsurances().subscribe(list => {this.insurances = list;});
-    this.bookingSrv.getAccessories().subscribe(list => {this.accessories = list;});
-
+    forkJoin({
+      locs: this.bookingSrv.getLocations(),
+      types: this.bookingSrv.getBikeTypes(),
+      ins: this.bookingSrv.getInsurances(),
+      accs: this.bookingSrv.getAccessories()
+    })
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe({
+        next: ({ locs, types, ins, accs }) => {
+          this.locations = locs;
+          this.bikeTypes = types;
+          this.insurances = ins;
+          this.accessories = accs;
+        },
+        error: err => {
+          console.error('Errore caricamento dati:', err);
+        }
+      });
     this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
-      this.pickupDate = value;
     });
-
-    this.bookingForm.get('pickupLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
-    this.bookingForm.get('dropoffLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
+    this.bookingForm.get('pickupLocation')?.valueChanges.subscribe(() => {
+    });
+    this.bookingForm.get('dropoffLocation')?.valueChanges.subscribe(() => {
+    });
   }
 
   get halfDays(): number {
@@ -102,12 +127,23 @@ export class BookingComponent implements OnInit{
 
   selectBikeType(typeId: string): void {
     this.bookingForm.patchValue({ bikeType: typeId, bikeId: null });
-    this.bookingSrv.getBikes().subscribe(all => {
-      this.filteredBikes = all.filter(b => {
-        const bt = typeof b.bikeType === 'string' ? b.bikeType : (b.bikeType as any)._id;
-        return bt === typeId && b.status === BikeStatus.AVAILABLE;
+    const locId = this.bookingForm.get('pickupLocation')!.value;
+    const date: Date = this.bookingForm.get('pickupDate')!.value;
+
+    if (!locId) {
+      return;
+    }
+
+    this.bookingSrv
+      .getBikes(locId, date)
+      .subscribe(all => {
+        this.filteredBikes = all.filter(b => {
+          const bt = typeof b.bikeType === 'string'
+            ? b.bikeType
+            : (b.bikeType as any)._id;
+          return bt === typeId;
+        });
       });
-    });
   }
 
   next() {
@@ -124,10 +160,14 @@ export class BookingComponent implements OnInit{
 
   public isStepValid(index: number): boolean {
     if (index === 0) {
-      return this.bookingForm.get('pickupLocation')!.valid
-        && this.bookingForm.get('dropoffLocation')!.valid
-        && this.bookingForm.get('pickupDate')!.valid
-        && this.bookingForm.get('dropoffDate')!.valid;
+      const baseValid =
+        this.bookingForm.get('pickupLocation')!.valid &&
+        this.bookingForm.get('dropoffLocation')!.valid &&
+        this.bookingForm.get('pickupDate')!.valid &&
+        this.bookingForm.get('dropoffDate')!.valid;
+      return this.isLoggedIn
+        ? baseValid
+        : baseValid && this.bookingForm.get('guestEmail')!.valid;
     }
     if (index === 1) {
       return this.bookingForm.get('bikeType')!.valid
@@ -228,6 +268,7 @@ export class BookingComponent implements OnInit{
     const totalPrice = this.getTotalPriceByInsuranceAndAccessories();
 
     const payload: Booking = {
+      guestEmail: fv.guestEmail,
       pickupDate: fv.pickupDate,
       pickupLocation: fv.pickupLocation,
       dropoffDate: fv.dropoffDate,

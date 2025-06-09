@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {apiUrl} from '../../../secrets';
 import {Location} from '../interfaces/location';
@@ -35,8 +35,12 @@ export class BookingService {
     return this.http.post<Booking>(`${apiUrl}/bookings`, reservation);
   }
 
-  getBikes(): Observable<Bike[]> {
-    return this.http.get<{ bikes: Bike[] }>(`${apiUrl}/bikes`)
+  getBikes(locationId: string, date?: Date): Observable<Bike[]> {
+    let params = new HttpParams().set('location', locationId);
+    if (date) params = params.set('date', date.toISOString());
+    return this.http
+      .get<{ bikes: Bike[] }>(`${apiUrl}/bikes`, { params })
       .pipe(map(res => res.bikes));
   }
+
 }
