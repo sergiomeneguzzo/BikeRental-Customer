@@ -1,0 +1,29 @@
+.container-navbar {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 1.5rem .25rem;
+}
+
+.nav-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.nav-list {
+    display: flex;
+    justify-content: end;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+}
+
+.nav-item {}

@@ -10,16 +10,25 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './utils/auth.interceptor';
-import {ThemeBlue} from './theme';
-import {providePrimeNG} from 'primeng/config';
+import { ThemeBlue } from './theme';
+import { providePrimeNG } from 'primeng/config';
 import { BookingComponent } from './pages/booking/booking.component';
-import {DropdownModule} from 'primeng/dropdown';
-import {Calendar} from 'primeng/calendar';
-import {Checkbox} from 'primeng/checkbox';
-import {ButtonDirective} from 'primeng/button';
-import {ToastModule} from 'primeng/toast';
-import {Steps} from 'primeng/steps';
-import {MessageService} from 'primeng/api';
+import { DropdownModule } from 'primeng/dropdown';
+import { Calendar, CalendarModule } from 'primeng/calendar';
+import { Checkbox, CheckboxModule } from 'primeng/checkbox';
+import { ButtonDirective, ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { Steps, StepsModule } from 'primeng/steps';
+import { MessageService } from 'primeng/api';
+import { RouterModule } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { MessageModule } from 'primeng/message';
+import { PasswordModule } from 'primeng/password';
+import { CardModule } from 'primeng/card';
+import { HomeComponent } from './pages/home/home.component';
+import { NavbarComponent } from './shared/navbar/navbar.component';
+import { FooterComponent } from './shared/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -28,20 +37,33 @@ import {MessageService} from 'primeng/api';
     RegisterComponent,
     LoaderComponent,
     BookingComponent,
+    HomeComponent,
+    NavbarComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ReactiveFormsModule,
-    HttpClientModule,
+    RouterModule,              // ← assicura la registrazione di <router-outlet>
+    ReactiveFormsModule,       // ← per [formGroup]
     FormsModule,
+    HttpClientModule,
+
+    // PrimeNG per login / register
+    CardModule,
+    InputTextModule,
+    PasswordModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+    MessageModule,
+
+    // altri PrimeNG
     DropdownModule,
-    Calendar,
-    Checkbox,
-    ButtonDirective,
+    CalendarModule,
+    CheckboxModule,
     ToastModule,
-    Steps
+    StepsModule
   ],
   providers: [
     provideAnimationsAsync(),
@@ -62,4 +84,4 @@ import {MessageService} from 'primeng/api';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
