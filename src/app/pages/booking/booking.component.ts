@@ -26,6 +26,7 @@ export class BookingComponent implements OnInit{
     { label: 'Step 3' },
   ];
   activeIndex = 0;
+  pickupDate: Date | null = null;
 
   locations: Location[] = [];
   bikeTypes: BikeType[] = [];
@@ -61,6 +62,10 @@ export class BookingComponent implements OnInit{
     this.bookingSrv.getBikeTypes().subscribe(types => this.bikeTypes = types);
     this.bookingSrv.getInsurances().subscribe(list => {this.insurances = list;});
     this.bookingSrv.getAccessories().subscribe(list => {this.accessories = list;});
+
+    this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
+      this.pickupDate = value;
+    });
 
     this.bookingForm.get('pickupLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
     this.bookingForm.get('dropoffLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
