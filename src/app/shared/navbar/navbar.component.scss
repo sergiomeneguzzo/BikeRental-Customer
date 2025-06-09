@@ -9,12 +9,12 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 1.5rem .25rem;
+  padding: 1.5rem 1.5rem .25rem; // padding: 
 }
 
 .nav-brand {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   color: var(--primary-color);
 }
 
@@ -25,5 +25,3 @@
     list-style: none;
     padding: 0;
 }
-
-.nav-item {}
