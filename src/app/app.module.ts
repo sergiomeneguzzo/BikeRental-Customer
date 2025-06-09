@@ -12,6 +12,13 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './utils/auth.interceptor';
 import {ThemeBlue} from './theme';
 import {providePrimeNG} from 'primeng/config';
+import { BookingComponent } from './pages/booking/booking.component';
+import {DropdownModule} from 'primeng/dropdown';
+import {Calendar} from 'primeng/calendar';
+import {Checkbox} from 'primeng/checkbox';
+import {ButtonDirective} from 'primeng/button';
+import {ToastModule} from 'primeng/toast';
+import {Steps} from 'primeng/steps';
 
 @NgModule({
   declarations: [
@@ -19,6 +26,7 @@ import {providePrimeNG} from 'primeng/config';
     LoginComponent,
     RegisterComponent,
     LoaderComponent,
+    BookingComponent,
   ],
   imports: [
     BrowserModule,
@@ -27,6 +35,12 @@ import {providePrimeNG} from 'primeng/config';
     ReactiveFormsModule,
     HttpClientModule,
     FormsModule,
+    DropdownModule,
+    Calendar,
+    Checkbox,
+    ButtonDirective,
+    ToastModule,
+    Steps
   ],
   providers: [
     provideAnimationsAsync(),

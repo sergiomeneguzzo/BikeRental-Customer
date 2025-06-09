@@ -1,0 +1,104 @@
+<p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
+
+<div class="p-mt-4">
+  <form [formGroup]="bookingForm">
+    <div *ngIf="activeIndex === 0" class="p-fluid p-formgrid p-grid">
+      <!-- Pickup Location -->
+      <div class="p-field p-col-12 p-md-6">
+        <label for="pickupLocation">Luogo ritiro</label>
+        <p-dropdown
+          id="pickupLocation"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="_id"
+          placeholder="Seleziona pickup"
+          formControlName="pickupLocation"
+        ></p-dropdown>
+      </div>
+
+      <!-- Dropoff Location -->
+      <div class="p-field p-col-12 p-md-6">
+        <label for="dropoffLocation">Luogo riconsegna</label>
+        <p-dropdown
+          id="dropoffLocation"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="_id"
+          placeholder="Seleziona dropoff"
+          formControlName="dropoffLocation"
+        ></p-dropdown>
+      </div>
+
+      <!-- Pickup Date -->
+      <div class="p-field p-col-12 p-md-6">
+        <label for="pickupDate">Data e ora ritiro</label>
+        <p-calendar
+          id="pickupDate"
+          formControlName="pickupDate"
+          [disabled]="true"
+          dateFormat="yy-mm-dd"
+          hourFormat="24"
+        ></p-calendar>
+      </div>
+
+      <!-- Dropoff Date -->
+      <div class="p-field p-col-12 p-md-6">
+        <label for="dropoffDate">Data e ora riconsegna</label>
+        <p-calendar
+          id="dropoffDate"
+          formControlName="dropoffDate"
+          [disabled]="true"
+          dateFormat="yy-mm-dd"
+          hourFormat="24"
+        ></p-calendar>
+      </div>
+
+      <!-- Extra Fee Checkbox -->
+      <div class="p-field-checkbox p-col-12">
+        <p-checkbox
+          id="extraLocationFee"
+          formControlName="extraLocationFee"
+          binary="true"
+          [disabled]="true"
+        ></p-checkbox>
+        <label for="extraLocationFee">
+          Applica extra fee (€10) per sede diversa
+        </label>
+      </div>
+
+      <!-- Next Button -->
+      <div class="p-col-12 p-text-right">
+        <button
+          pButton
+          type="button"
+          label="Avanti"
+          (click)="next()"
+          [disabled]="
+            !bookingForm.get('pickupLocation')!.valid ||
+            !bookingForm.get('dropoffLocation')!.valid ||
+            !bookingForm.get('pickupDate')!.valid ||
+            !bookingForm.get('dropoffDate')!.valid
+          "
+        ></button>
+      </div>
+    </div>
+
+    <!-- STEP 2 placeholder -->
+    <div *ngIf="activeIndex === 1">
+      <!-- contenuti step 2... -->
+      <div class="p-text-right">
+        <button pButton type="button" label="Indietro" (click)="prev()"></button>
+        <button pButton type="button" label="Avanti" (click)="next()"></button>
+      </div>
+    </div>
+
+    <!-- STEP 3 placeholder -->
+    <div *ngIf="activeIndex === 2">
+
+      <div class="p-text-right">
+        <button pButton type="button" label="Indietro" (click)="prev()"></button>
+        <button pButton type="button" label="Conferma" (click)="submit()"></button>
+      </div>
+    </div>
+  </form>
+</div>

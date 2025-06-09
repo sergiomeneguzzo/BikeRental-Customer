@@ -9,13 +9,8 @@ import { AuthService } from './services/auth.service';
   standalone: false,
 })
 export class AppComponent {
-  isClosed = false;
   isLoading = false;
   currentUser$;
-
-  toggleSidebar() {
-    this.isClosed = !this.isClosed;
-  }
 
   constructor(
     public authSrv: AuthService,
