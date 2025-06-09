@@ -1,5 +1,4 @@
 <div class="booking-container">
-  <!-- STEP INDICATOR -->
   <div class="step-indicator">
     <span>Step {{ activeIndex + 1 }} di 3</span>
     <div class="progress-bar">
@@ -11,7 +10,6 @@
     <!-- STEP 1 -->
     <div *ngIf="activeIndex === 0" class="form-grid">
 
-      <!-- Pickup location -->
       <div class="form-field">
         <label for="pickupLocation">Luogo ritiro</label>
         <p-dropdown
@@ -19,12 +17,11 @@
           [options]="locations"
           optionLabel="name"
           optionValue="_id"
-          placeholder="Seleziona pickup"
+          placeholder="Seleziona luogo ritiro"
           formControlName="pickupLocation"
         ></p-dropdown>
       </div>
 
-      <!-- Dropoff location -->
       <div class="form-field">
         <label for="dropoffLocation">Luogo riconsegna</label>
         <p-dropdown
@@ -32,16 +29,14 @@
           [options]="locations"
           optionLabel="name"
           optionValue="_id"
-          placeholder="Seleziona dropoff"
+          placeholder="Seleziona luogo riconsegna"
           formControlName="dropoffLocation"
         ></p-dropdown>
-        <!-- Extra fee under dropdown -->
         <div class="extra-fee-row" *ngIf="bookingForm.get('pickupLocation')!.value && bookingForm.get('dropoffLocation')!.value && bookingForm.get('pickupLocation')!.value !== bookingForm.get('dropoffLocation')!.value">
           <span class="extra-fee-label">+10€</span>
         </div>
       </div>
 
-      <!-- Pickup date & time -->
       <div class="form-field">
         <label for="pickupDate">Data e ora ritiro</label>
         <p-calendar
@@ -51,11 +46,12 @@
           [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          (onSelect)="onDateSelect($event, 'pickup')"
+          (onInput)="onDateInput($event, 'pickup')"
           placeholder="Seleziona data"
         ></p-calendar>
       </div>
 
-      <!-- Dropoff date & time -->
       <div class="form-field">
         <label for="dropoffDate">Data e ora riconsegna</label>
         <p-calendar
@@ -65,11 +61,12 @@
           [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          (onSelect)="onDateSelect($event, 'dropoff')"
+          (onInput)="onDateInput($event, 'dropoff')"
           placeholder="Seleziona data"
         ></p-calendar>
       </div>
 
-      <!-- Next button -->
       <div class="form-actions">
         <button type="button" class="btn-primary" (click)="next()" [disabled]="!isStepValid(0)">Avanti</button>
       </div>
@@ -77,6 +74,9 @@
 
     <!-- STEP 2: Scelta bici -->
     <div *ngIf="activeIndex === 1">
+      <div class="form-field">
+      <label>Seleziona tipologia</label>
+      </div>
       <div class="radio-group">
         <label *ngFor="let bt of bikeTypes" class="radio-button">
           <input type="radio" [value]="bt._id" formControlName="bikeType" (change)="selectBikeType(bt._id)" />
@@ -88,14 +88,25 @@
         </label>
       </div>
 
-      <!-- Lista cards delle bici filtrate -->
       <div class="bike-cards">
         <div class="bike-cards" *ngIf="filteredBikes.length > 0">
         <div *ngFor="let bike of filteredBikes" class="card">
           <div class="price-badge">
             €{{ getTotalPrice(bike) | number:'1.0-0' }}
           </div>
-          <img *ngIf="bike.picture" [src]="bike.picture" alt="{{ bike.serialNumber }}" />
+          <p-image
+            *ngIf="bike.picture"
+            [src]="bike.picture"
+            [alt]="bike.serialNumber"
+            [preview]="true"
+            width="120"
+            height="100"
+            styleClass="bike-image">
+          </p-image>
+
+          <div *ngIf="!bike.picture" class="no-image-placeholder">
+            <i class="pi pi-image" style="font-size: 2rem; color: #ccc;"></i>
+          </div>
           <div class="card-body">
             <h5 *ngIf="bike.bikeType && (bike.bikeType).category">
               {{ (bike.bikeType).category }}
@@ -104,7 +115,12 @@
               {{ bike.bikeType }}
             </h5>
             <p><strong>Seriale:</strong> {{ bike.serialNumber }}</p>
-            <p><strong>Stato:</strong> {{ bike.status }}</p>
+            <p><strong>Stato:</strong>
+              <span class="status-indicator">
+    <span class="status-dot" ></span>
+                {{ getStatusText(bike.status) }}
+  </span>
+            </p>
             <p><strong>Taglia:</strong>
               <span *ngFor="let s of bike.sizes; let i = index">
     {{ s.sizeLabel }} <small>({{ s.minHeightCm }}–{{ s.maxHeightCm }}cm)</small>{{ i < bike.sizes.length - 1 ? ', ' : '' }}

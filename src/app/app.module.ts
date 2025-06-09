@@ -30,6 +30,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import {MultiSelect} from 'primeng/multiselect';
+import {Image} from 'primeng/image';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {MultiSelect} from 'primeng/multiselect';
     CheckboxModule,
     ToastModule,
     StepsModule,
-    MultiSelect
+    MultiSelect,
+    Image
   ],
   providers: [
     provideAnimationsAsync(),

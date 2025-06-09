@@ -59,15 +59,8 @@ export class BookingComponent implements OnInit{
   ngOnInit(): void {
     this.bookingSrv.getLocations().subscribe(locs => this.locations = locs);
     this.bookingSrv.getBikeTypes().subscribe(types => this.bikeTypes = types);
-    this.bookingSrv.getInsurances().subscribe(list => {
-      console.log('INSURANCES LOADED:', list);
-      this.insurances = list;
-    });
-    this.bookingSrv.getAccessories().subscribe(list => {
-      console.log('ACCESSORIES LOADED:', list);
-      this.accessories = list;
-    });
-
+    this.bookingSrv.getInsurances().subscribe(list => {this.insurances = list;});
+    this.bookingSrv.getAccessories().subscribe(list => {this.accessories = list;});
 
     this.bookingForm.get('pickupLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
     this.bookingForm.get('dropoffLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
@@ -155,11 +148,11 @@ export class BookingComponent implements OnInit{
 
   getTotalPriceByInsuranceAndAccessories(): number {
     let total = 0;
+
     const bike = this.filteredBikes.find(b => b.id === this.bookingForm.value.bikeId);
     if (bike) {
       total += this.getTotalPrice(bike);
     }
-
     const insId = this.bookingForm.value.insuranceId;
     const ins = this.insurances.find(i => i._id === insId);
     if (ins) {
@@ -171,7 +164,54 @@ export class BookingComponent implements OnInit{
       const a = this.accessories.find(ac => ac._id === id);
       if (a) total += a.price;
     });
+    const extraLocationFee = this.bookingForm.get('extraLocationFee')?.value;
+    if (extraLocationFee) {
+      total += 10;
+    }
     return total;
+  }
+
+  getStatusText(status: BikeStatus): string {
+    switch (status) {
+      case BikeStatus.AVAILABLE:
+        return 'Disponibile';
+      case BikeStatus.RENTED:
+        return 'Noleggiata';
+      case BikeStatus.MAINTENANCE:
+        return 'In manutenzione';
+      case BikeStatus.UNAVAILABLE:
+        return 'Non disponibile';
+      default:
+        return 'Stato sconosciuto';
+    }
+  }
+
+  onDateSelect(selectedDate: Date, type: 'pickup' | 'dropoff'): void {
+    if (selectedDate) {
+      this.normalizeToHourOnly(selectedDate, type);
+    }
+  }
+
+  onDateInput(event: any, type: 'pickup' | 'dropoff'): void {
+    const inputDate = event.target.value;
+    if (inputDate) {
+      const date = new Date(inputDate);
+      if (!isNaN(date.getTime())) {
+        this.normalizeToHourOnly(date, type);
+      }
+    }
+  }
+
+  private normalizeToHourOnly(date: Date, type: 'pickup' | 'dropoff'): void {
+    date.setMinutes(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+
+    if (type === 'pickup') {
+      this.bookingForm.patchValue({ pickupDate: new Date(date) });
+    } else {
+      this.bookingForm.patchValue({ dropoffDate: new Date(date) });
+    }
   }
 
   protected readonly Object = Object;
