@@ -1,0 +1,33 @@
+.booking-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+
+  .p-field {
+    margin-bottom: 1.5rem;
+  }
+
+  .dropoff-wrapper {
+    position: relative;
+
+    .extra-fee-label {
+      position: absolute;
+      top: 2.3rem;
+      right: 0.5rem;
+      background: #fffae5;
+      color: #b85c00;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.25rem;
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+  }
+
+  p-steps {
+    margin-bottom: 2rem;
+  }
+
+  button[pButton] {
+    min-width: 6rem;
+  }
+}

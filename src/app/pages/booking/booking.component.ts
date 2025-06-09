@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {BookingService} from '../../services/booking.service';
 
-
 interface ReservationStep {
   label: string;
 }
@@ -16,7 +15,7 @@ interface ReservationStep {
 })
 export class BookingComponent implements OnInit{
   steps: ReservationStep[] = [
-    { label: 'Luogo & Date' },
+    { label: 'Step 1' },
     { label: 'Step 2' },
     { label: 'Step 3' },
   ];

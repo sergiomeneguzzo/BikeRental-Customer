@@ -1,6 +1,6 @@
 <p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
 
-<div class="p-mt-4">
+<div class="booking-container">
   <form [formGroup]="bookingForm">
     <div *ngIf="activeIndex === 0" class="p-fluid p-formgrid p-grid">
       <!-- Pickup Location -->
@@ -16,8 +16,8 @@
         ></p-dropdown>
       </div>
 
-      <!-- Dropoff Location -->
-      <div class="p-field p-col-12 p-md-6">
+      <!-- Dropoff Location + extra fee label -->
+      <div class="p-field p-col-12 p-md-6 dropoff-wrapper">
         <label for="dropoffLocation">Luogo riconsegna</label>
         <p-dropdown
           id="dropoffLocation"
@@ -27,6 +27,12 @@
           placeholder="Seleziona dropoff"
           formControlName="dropoffLocation"
         ></p-dropdown>
+        <span
+          class="extra-fee-label"
+          *ngIf="bookingForm.value.extraLocationFee"
+        >
+          +10 €
+        </span>
       </div>
 
       <!-- Pickup Date -->
@@ -35,7 +41,7 @@
         <p-calendar
           id="pickupDate"
           formControlName="pickupDate"
-          [disabled]="true"
+          [showTime]="true"
           dateFormat="yy-mm-dd"
           hourFormat="24"
         ></p-calendar>
@@ -47,23 +53,10 @@
         <p-calendar
           id="dropoffDate"
           formControlName="dropoffDate"
-          [disabled]="true"
+          [showTime]="true"
           dateFormat="yy-mm-dd"
           hourFormat="24"
         ></p-calendar>
-      </div>
-
-      <!-- Extra Fee Checkbox -->
-      <div class="p-field-checkbox p-col-12">
-        <p-checkbox
-          id="extraLocationFee"
-          formControlName="extraLocationFee"
-          binary="true"
-          [disabled]="true"
-        ></p-checkbox>
-        <label for="extraLocationFee">
-          Applica extra fee (€10) per sede diversa
-        </label>
       </div>
 
       <!-- Next Button -->
@@ -94,7 +87,7 @@
 
     <!-- STEP 3 placeholder -->
     <div *ngIf="activeIndex === 2">
-
+      <!-- contenuti step 3... -->
       <div class="p-text-right">
         <button pButton type="button" label="Indietro" (click)="prev()"></button>
         <button pButton type="button" label="Conferma" (click)="submit()"></button>

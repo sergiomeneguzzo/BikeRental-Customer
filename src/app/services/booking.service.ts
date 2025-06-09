@@ -11,6 +11,6 @@ export class BookingService {
   constructor(private http: HttpClient) {}
 
   getLocations(): Observable<Location[]> {
-    return this.http.get<Location[]>(apiUrl);
+    return this.http.get<Location[]>(`${apiUrl}/locations`);
   }
 }
