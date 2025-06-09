@@ -19,6 +19,7 @@ import {Checkbox} from 'primeng/checkbox';
 import {ButtonDirective} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import {Steps} from 'primeng/steps';
+import {MessageService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import {Steps} from 'primeng/steps';
   ],
   providers: [
     provideAnimationsAsync(),
+    MessageService,
     providePrimeNG({
       theme: {
         preset: ThemeBlue,
