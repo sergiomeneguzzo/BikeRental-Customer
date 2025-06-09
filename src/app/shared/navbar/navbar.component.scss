@@ -9,7 +9,7 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 1.5rem 1.5rem .25rem; // padding: 
+  padding: 1.5rem 1.5rem 1.5rem;
 }
 
 .nav-brand {
@@ -19,9 +19,9 @@
 }
 
 .nav-list {
-    display: flex;
-    justify-content: end;
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+  list-style: none;
+  padding: 0;
 }
