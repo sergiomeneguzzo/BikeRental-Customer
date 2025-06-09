@@ -231,7 +231,7 @@
 
     &.selected {
       animation: pulse 0.4s ease-out;
-      border-color: #2c3e50; /* evidenzia la card selezionata */
+      border-color: #2c3e50;
     }
   }
 }
@@ -251,7 +251,6 @@
   }
 }
 
-/* Icon button base */
 .icon-button {
   display: inline-flex;
   align-items: center;
@@ -303,3 +302,80 @@
     animation: pulse 0.4s ease-out;
   }
 }
+
+//Step 3
+.payment-method {
+  .payment-group {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .payment-option {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+
+    input[type='radio'] {
+      display: none;
+    }
+
+    .option-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      width: 100%;
+      box-sizing: border-box;
+
+      &:hover {
+        border-color: #888;
+        background: #f9f9f9;
+      }
+    }
+
+    .payment-logo {
+      width: 4rem;
+      height: 3.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .radio-custom {
+      width: 1.2rem;
+      height: 1.2rem;
+      border: 2px solid #000;
+      border-radius: 50%;
+      position: relative;
+      margin-bottom: 0.5rem;
+
+      &::after {
+        content: '';
+        width: 0.6rem;
+        height: 0.6rem;
+        background-color: #000;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.2s ease;
+      }
+    }
+
+    input[type='radio']:checked + .option-content .radio-custom::after {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .payment-label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+}
+

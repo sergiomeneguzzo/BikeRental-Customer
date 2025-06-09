@@ -4,6 +4,8 @@ import {map, Observable} from 'rxjs';
 import {apiUrl} from '../../../secrets';
 import {Location} from '../interfaces/location';
 import {Bike, BikeType} from '../interfaces/bike';
+import {Insurance} from '../interfaces/insurance';
+import {Accessory} from '../interfaces/accessories';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,14 @@ export class BookingService {
 
   getBikeTypes(): Observable<BikeType[]> {
     return this.http.get<BikeType[]>(`${apiUrl}/biketypes`);
+  }
+
+  getInsurances(): Observable<Insurance[]> {
+    return this.http.get<Insurance[]>(`${apiUrl}/insurances`);
+  }
+
+  getAccessories(): Observable<Accessory[]> {
+    return this.http.get<Accessory[]>(`${apiUrl}/accessories`);
   }
 
   getBikes(): Observable<Bike[]> {

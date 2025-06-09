@@ -4,10 +4,14 @@ import {HttpClient} from '@angular/common/http';
 import {BookingService} from '../../services/booking.service';
 import {Location} from '../../interfaces/location';
 import {Bike, BikeStatus, BikeType} from '../../interfaces/bike';
+import {Accessory} from '../../interfaces/accessories';
+import {Insurance} from '../../interfaces/insurance';
 
 interface ReservationStep {
   label: string;
 }
+
+export type PaymentMethod = 'onPickup' | 'paypal' | 'card';
 
 @Component({
   selector: 'app-booking',
@@ -26,6 +30,9 @@ export class BookingComponent implements OnInit{
   locations: Location[] = [];
   bikeTypes: BikeType[] = [];
   filteredBikes: Bike[] = [];
+  insurances: Insurance[] = [];
+  accessories: Accessory[] = [];
+
   bookingForm: FormGroup;
 
   constructor(
@@ -41,13 +48,26 @@ export class BookingComponent implements OnInit{
       extraLocationFee: [false],
       // STEP 2
       bikeType: [null, Validators.required],
-      bikeId: [null, Validators.required]
+      bikeId: [null, Validators.required],
+      //STEP 3
+      insuranceId: [null, Validators.required],
+      accessories: [ [] ],
+      paymentMethod: [null, Validators.required]
     });
   }
 
   ngOnInit(): void {
     this.bookingSrv.getLocations().subscribe(locs => this.locations = locs);
     this.bookingSrv.getBikeTypes().subscribe(types => this.bikeTypes = types);
+    this.bookingSrv.getInsurances().subscribe(list => {
+      console.log('INSURANCES LOADED:', list);
+      this.insurances = list;
+    });
+    this.bookingSrv.getAccessories().subscribe(list => {
+      console.log('ACCESSORIES LOADED:', list);
+      this.accessories = list;
+    });
+
 
     this.bookingForm.get('pickupLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
     this.bookingForm.get('dropoffLocation')!.valueChanges.subscribe(() => this.updateExtraFee());
@@ -118,6 +138,10 @@ export class BookingComponent implements OnInit{
       return this.bookingForm.get('bikeType')!.valid
         && this.bookingForm.get('bikeId')!.valid;
     }
+    if (index === 2) {
+      return this.bookingForm.get('insuranceId')!.valid
+        && this.bookingForm.get('paymentMethod')!.valid;
+    }
     return true;
   }
 
@@ -127,6 +151,27 @@ export class BookingComponent implements OnInit{
 
   deselectBike() {
     this.bookingForm.patchValue({ bikeId: null });
+  }
+
+  getTotalPriceByInsuranceAndAccessories(): number {
+    let total = 0;
+    const bike = this.filteredBikes.find(b => b.id === this.bookingForm.value.bikeId);
+    if (bike) {
+      total += this.getTotalPrice(bike);
+    }
+
+    const insId = this.bookingForm.value.insuranceId;
+    const ins = this.insurances.find(i => i._id === insId);
+    if (ins) {
+      total += ins.price;
+    }
+
+    const accIds: string[] = this.bookingForm.value.accessories || [];
+    accIds.forEach(id => {
+      const a = this.accessories.find(ac => ac._id === id);
+      if (a) total += a.price;
+    });
+    return total;
   }
 
   protected readonly Object = Object;

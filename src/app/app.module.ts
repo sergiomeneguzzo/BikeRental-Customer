@@ -29,6 +29,7 @@ import { CardModule } from 'primeng/card';
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
+import {MultiSelect} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { FooterComponent } from './shared/footer/footer.component';
     CalendarModule,
     CheckboxModule,
     ToastModule,
-    StepsModule
+    StepsModule,
+    MultiSelect
   ],
   providers: [
     provideAnimationsAsync(),

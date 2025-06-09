@@ -147,11 +147,104 @@
     </div>
 
     <!-- STEP 3 -->
-    <div *ngIf="activeIndex === 2">
-      <!-- contenuti step 3... -->
-      <div class="form-actions">
+    <div *ngIf="activeIndex === 2" class="form-grid">
+      <div class="form-field" style="grid-column:1/-1">
+        <label>Seleziona assicurazione</label>
+        <div class="radio-group">
+          <label *ngFor="let ins of insurances" class="radio-button">
+            <input type="radio"
+                   name="insuranceId"
+                   [value]="ins._id"
+                   formControlName="insuranceId" />
+            <span class="radio-custom"></span>
+            <div class="radio-label">
+              <strong>{{ ins.name }}</strong> — €{{ ins.price }}<br/>
+              <small *ngIf="ins.description">{{ ins.description }}</small>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-field" style="grid-column:1/-1">
+        <label for="accessories">Accessori aggiuntivi</label>
+        <p-multiSelect
+          id="accessories"
+          [options]="accessories"
+          optionLabel="name"
+          optionValue="_id"
+          placeholder="Scegli accessori"
+          formControlName="accessories"
+          display="chip">
+          <ng-template let-accessory pTemplate="item">
+            {{ accessory.name }} (€{{ accessory.price }})
+          </ng-template>
+        </p-multiSelect>
+      </div>
+
+      <div class="form-field payment-method" style="grid-column:1/-1">
+        <label>Metodo di pagamento</label>
+        <div class="payment-group">
+          <label class="payment-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="onPickup"
+              formControlName="paymentMethod"
+            />
+            <div class="option-content">
+              <img src="ritiro.png" alt="Bancomat" class="payment-logo"/>
+              <span class="radio-custom"></span>
+              <div class="payment-label">Paga al ritiro</div>
+            </div>
+          </label>
+
+          <label class="payment-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="paypal"
+              formControlName="paymentMethod"
+            />
+            <div class="option-content">
+              <img src="paypal.webp" alt="PayPal" class="payment-logo"/>
+              <span class="radio-custom"></span>
+              <div class="payment-label">PayPal</div>
+            </div>
+          </label>
+
+          <label class="payment-option">
+            <input
+              type="radio"
+              name="paymentMethod"
+              value="card"
+              formControlName="paymentMethod"
+            />
+            <div class="option-content">
+              <img src="bancomat.jpg" alt="Bancomat" class="payment-logo"/>
+              <span class="radio-custom"></span>
+              <div class="payment-label">Bancomat</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-field" style="grid-column:1/-1; text-align:right">
+        <p>
+          <strong>Totale prenotazione:</strong>
+          {{
+            getTotalPriceByInsuranceAndAccessories()
+              | number:'1.0-0'
+          }} €
+        </p>
+      </div>
+
+      <div class="form-actions" style="grid-column:1/-1">
         <button type="button" class="btn-secondary" (click)="prev()">Indietro</button>
-        <button type="button" class="btn-primary" (click)="submit()">Conferma</button>
+        <button type="button" class="btn-primary"
+                (click)="submit()"
+                [disabled]="!isStepValid(2)">
+          Conferma
+        </button>
       </div>
     </div>
   </form>
