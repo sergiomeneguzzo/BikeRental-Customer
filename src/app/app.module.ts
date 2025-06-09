@@ -47,12 +47,11 @@ import {Image} from 'primeng/image';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    RouterModule,              // ← assicura la registrazione di <router-outlet>
-    ReactiveFormsModule,       // ← per [formGroup]
+    RouterModule,
+    ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
 
-    // PrimeNG per login / register
     CardModule,
     InputTextModule,
     PasswordModule,
@@ -60,7 +59,6 @@ import {Image} from 'primeng/image';
     ProgressSpinnerModule,
     MessageModule,
 
-    // altri PrimeNG
     DropdownModule,
     CalendarModule,
     CheckboxModule,

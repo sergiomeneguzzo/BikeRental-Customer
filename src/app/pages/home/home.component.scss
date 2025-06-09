@@ -1,0 +1,29 @@
+.hero-top {
+  display: flex;
+  align-items: flex-end;
+  padding: 4vw 0vw 3.5vw;
+  gap: 6.25vw;
+  min-height: 35vw;
+}
+
+.hero-top h1 {
+  font-size: 11.5vw;
+  line-height: .8;
+  letter-spacing: -0.04em;
+}
+
+.col-1 h1 {
+  font-size: 7.125vw;
+  line-height: 3.75vw;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.hero-top col-2 {
+  padding: 4.1666666667vw 0vw 3.3333333333vw;
+  min-height: 35vw;
+}
+
+.none {
+  display: none;
+}
