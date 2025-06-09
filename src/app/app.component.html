@@ -1,0 +1,11 @@
+@if(isLoading) {
+<app-loader></app-loader>
+}
+
+<app-sidebar
+  [user]="currentUser$ | async"
+  *ngIf="currentUser$ | async"
+  (logout)="logout()"
+></app-sidebar>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,46 @@
+/* styles.scss */
+$primary-color: #0f73f6;
+$light-gray: #bfbfc6;
+$border-color: #e1e5ff;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  min-height: 100vh;
+}
+
+// Snackbar styles
+.snackbar-error {
+  --mdc-snackbar-container-color: #de1124 !important;
+  --mat-mdc-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+}
+
+.snackbar-warning {
+  --mdc-snackbar-container-color: #ffcc00 !important;
+  --mat-mdc-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #000000 !important;
+  --mat-snack-bar-button-color: #000000 !important;
+}
+
+.snackbar-success {
+  --mdc-snackbar-container-color: #28a745 !important;
+  --mat-mdc-snack-bar-button-color: #ffffff !important;
+  --mdc-snackbar-supporting-text-color: #ffffff !important;
+  --mat-snack-bar-button-color: #ffffff !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
