@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { BookingComponent } from './pages/booking/booking.component';
 import { HomeComponent } from './pages/home/home.component';
+import {BookingConfirmedComponent} from './pages/booking/booking-confirmed/booking-confirmed.component';
 
 const routes: Routes = [
   // Redirect dalla root a /home
@@ -13,7 +14,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'booking', component: BookingComponent },
-
+  { path: 'booking-confirmed', component: BookingConfirmedComponent },
 ];
 
 @NgModule({

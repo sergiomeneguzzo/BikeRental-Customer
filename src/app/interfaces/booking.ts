@@ -4,13 +4,6 @@ import {Insurance} from './insurance';
 import {Bike} from './bike';
 import {Location} from './location';
 
-export enum ReservationStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  CANCELLED = 'cancelled',
-  COMPLETED = 'completed',
-}
-
 export interface Booking {
   id?: string;
   userId?: User | string;
@@ -24,7 +17,6 @@ export interface Booking {
   insurances?: Insurance | string[];
   extraLocationFee: number;
   totalPrice: number;
-  status: ReservationStatus;
   reminderSent: boolean;
   paymentMethod?: string;
   createdAt?: Date;

@@ -31,6 +31,7 @@ import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
 import {MultiSelect} from 'primeng/multiselect';
 import {Image} from 'primeng/image';
+import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/booking-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import {Image} from 'primeng/image';
     HomeComponent,
     NavbarComponent,
     FooterComponent,
+    BookingConfirmedComponent,
   ],
   imports: [
     BrowserModule,

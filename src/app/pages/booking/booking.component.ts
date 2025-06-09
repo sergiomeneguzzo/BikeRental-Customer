@@ -6,6 +6,8 @@ import {Location} from '../../interfaces/location';
 import {Bike, BikeStatus, BikeType} from '../../interfaces/bike';
 import {Accessory} from '../../interfaces/accessories';
 import {Insurance} from '../../interfaces/insurance';
+import {Booking} from '../../interfaces/booking';
+import {Router} from '@angular/router';
 
 interface ReservationStep {
   label: string;
@@ -38,7 +40,8 @@ export class BookingComponent implements OnInit{
 
   constructor(
     private fb: FormBuilder,
-    private bookingSrv: BookingService
+    private bookingSrv: BookingService,
+    private router: Router
   ) {
     this.bookingForm = this.fb.group({
       // STEP 1
@@ -116,12 +119,6 @@ export class BookingComponent implements OnInit{
   prev() {
     if (this.activeIndex > 0) {
       this.activeIndex--;
-    }
-  }
-
-  submit(): void {
-    if (this.bookingForm.valid) {
-      console.log('Booking payload:', this.bookingForm.value);
     }
   }
 
@@ -217,6 +214,49 @@ export class BookingComponent implements OnInit{
     } else {
       this.bookingForm.patchValue({ dropoffDate: new Date(date) });
     }
+  }
+
+  submit(): void {
+    if (this.bookingForm.invalid) {
+      return;
+    }
+
+    const fv = this.bookingForm.value;
+
+    const extraFee = fv.extraLocationFee ? 10 : 0;
+
+    const totalPrice = this.getTotalPriceByInsuranceAndAccessories();
+
+    const payload: Booking = {
+      pickupDate: fv.pickupDate,
+      pickupLocation: fv.pickupLocation,
+      dropoffDate: fv.dropoffDate,
+      dropoffLocation: fv.dropoffLocation,
+      items: [fv.bikeId],
+      accessories: fv.accessories,
+      insurances: [fv.insuranceId],
+      extraLocationFee: extraFee,
+      totalPrice: totalPrice,
+      reminderSent: false,
+      paymentMethod: fv.paymentMethod
+    };
+
+    console.log('Payload reservation:', payload);
+    this.bookingSrv.createReservation(payload).subscribe({
+      next: reservation => {
+        if (localStorage.getItem('authToken')) {
+          this.router.navigate(['/booking-confirmed'], {
+            queryParams: { id: reservation.id }
+          });
+        }
+        else {
+          this.router.navigate(['/register']);
+        }
+      },
+      error: err => {
+        console.error('Errore creazione prenotazione:', err);
+      }
+    });
   }
 
   protected readonly Object = Object;

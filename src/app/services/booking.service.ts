@@ -6,6 +6,7 @@ import {Location} from '../interfaces/location';
 import {Bike, BikeType} from '../interfaces/bike';
 import {Insurance} from '../interfaces/insurance';
 import {Accessory} from '../interfaces/accessories';
+import {Booking} from '../interfaces/booking';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,10 @@ export class BookingService {
 
   getAccessories(): Observable<Accessory[]> {
     return this.http.get<Accessory[]>(`${apiUrl}/accessories`);
+  }
+
+  createReservation(reservation: Booking): Observable<Booking> {
+    return this.http.post<Booking>(`${apiUrl}/bookings`, reservation);
   }
 
   getBikes(): Observable<Bike[]> {
