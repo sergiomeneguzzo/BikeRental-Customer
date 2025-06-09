@@ -1,10 +1,18 @@
-<p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
-
 <div class="booking-container">
+  <!-- STEP INDICATOR -->
+  <div class="step-indicator">
+    <span>Step {{ activeIndex + 1 }} di 3</span>
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="(activeIndex + 1) * 100 / 3"></div>
+    </div>
+  </div>
+
   <form [formGroup]="bookingForm">
-    <div *ngIf="activeIndex === 0" class="p-fluid p-formgrid p-grid">
-      <!-- Pickup Location -->
-      <div class="p-field p-col-12 p-md-6">
+    <!-- STEP 1 -->
+    <div *ngIf="activeIndex === 0" class="form-grid">
+
+      <!-- Pickup location -->
+      <div class="form-field">
         <label for="pickupLocation">Luogo ritiro</label>
         <p-dropdown
           id="pickupLocation"
@@ -16,8 +24,8 @@
         ></p-dropdown>
       </div>
 
-      <!-- Dropoff Location + extra fee label -->
-      <div class="p-field p-col-12 p-md-6 dropoff-wrapper">
+      <!-- Dropoff location -->
+      <div class="form-field">
         <label for="dropoffLocation">Luogo riconsegna</label>
         <p-dropdown
           id="dropoffLocation"
@@ -27,70 +35,123 @@
           placeholder="Seleziona dropoff"
           formControlName="dropoffLocation"
         ></p-dropdown>
-        <span
-          class="extra-fee-label"
-          *ngIf="bookingForm.value.extraLocationFee"
-        >
-          +10 €
-        </span>
+        <!-- Extra fee under dropdown -->
+        <div class="extra-fee-row" *ngIf="bookingForm.get('pickupLocation')!.value && bookingForm.get('dropoffLocation')!.value && bookingForm.get('pickupLocation')!.value !== bookingForm.get('dropoffLocation')!.value">
+          <span class="extra-fee-label">+10€</span>
+        </div>
       </div>
 
-      <!-- Pickup Date -->
-      <div class="p-field p-col-12 p-md-6">
+      <!-- Pickup date & time -->
+      <div class="form-field">
         <label for="pickupDate">Data e ora ritiro</label>
         <p-calendar
           id="pickupDate"
           formControlName="pickupDate"
           [showTime]="true"
+          [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          placeholder="Seleziona data"
         ></p-calendar>
       </div>
 
-      <!-- Dropoff Date -->
-      <div class="p-field p-col-12 p-md-6">
+      <!-- Dropoff date & time -->
+      <div class="form-field">
         <label for="dropoffDate">Data e ora riconsegna</label>
         <p-calendar
           id="dropoffDate"
           formControlName="dropoffDate"
           [showTime]="true"
+          [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          placeholder="Seleziona data"
         ></p-calendar>
       </div>
 
-      <!-- Next Button -->
-      <div class="p-col-12 p-text-right">
-        <button
-          pButton
-          type="button"
-          label="Avanti"
-          (click)="next()"
-          [disabled]="
-            !bookingForm.get('pickupLocation')!.valid ||
-            !bookingForm.get('dropoffLocation')!.valid ||
-            !bookingForm.get('pickupDate')!.valid ||
-            !bookingForm.get('dropoffDate')!.valid
-          "
-        ></button>
+      <!-- Next button -->
+      <div class="form-actions">
+        <button type="button" class="btn-primary" (click)="next()" [disabled]="!isStepValid(0)">Avanti</button>
       </div>
     </div>
 
-    <!-- STEP 2 placeholder -->
+    <!-- STEP 2: Scelta bici -->
     <div *ngIf="activeIndex === 1">
-      <!-- contenuti step 2... -->
-      <div class="p-text-right">
-        <button pButton type="button" label="Indietro" (click)="prev()"></button>
-        <button pButton type="button" label="Avanti" (click)="next()"></button>
+      <div class="radio-group">
+        <label *ngFor="let bt of bikeTypes" class="radio-button">
+          <input type="radio" [value]="bt._id" formControlName="bikeType" (change)="selectBikeType(bt._id)" />
+          <span class="radio-custom"></span>
+          <div class="radio-label">
+            <strong>{{ bt.category }}</strong> ({{ bt.motorType }})<br />
+            €{{ bt.PriceHalfDay }} / mezza giornata
+          </div>
+        </label>
+      </div>
+
+      <!-- Lista cards delle bici filtrate -->
+      <div class="bike-cards">
+        <div class="bike-cards" *ngIf="filteredBikes.length > 0">
+        <div *ngFor="let bike of filteredBikes" class="card">
+          <div class="price-badge">
+            €{{ getTotalPrice(bike) | number:'1.0-0' }}
+          </div>
+          <img *ngIf="bike.picture" [src]="bike.picture" alt="{{ bike.serialNumber }}" />
+          <div class="card-body">
+            <h5 *ngIf="bike.bikeType && (bike.bikeType).category">
+              {{ (bike.bikeType).category }}
+            </h5>
+            <h5 *ngIf="bike.bikeType && !(bike.bikeType).category">
+              {{ bike.bikeType }}
+            </h5>
+            <p><strong>Seriale:</strong> {{ bike.serialNumber }}</p>
+            <p><strong>Stato:</strong> {{ bike.status }}</p>
+            <p><strong>Taglia:</strong>
+              <span *ngFor="let s of bike.sizes; let i = index">
+    {{ s.sizeLabel }} <small>({{ s.minHeightCm }}–{{ s.maxHeightCm }}cm)</small>{{ i < bike.sizes.length - 1 ? ', ' : '' }}
+  </span>
+            </p>
+
+            <p *ngIf="bike.notes"><strong>Note:</strong> {{ bike.notes }}</p>
+            <button
+              *ngIf="bookingForm.value.bikeId !== bike.id"
+              type="button"
+              class="icon-button left small"
+              (click)="selectBike(bike.id!)">
+              <i class="pi pi-plus icon"></i>
+              Aggiungi
+            </button>
+
+            <div *ngIf="bookingForm.value.bikeId === bike.id" class="selected-actions left">
+              <button type="button" class="icon-button small selected animate" aria-label="Selezionata">
+                <i class="pi pi-check"></i>
+              </button>
+              <button type="button" class="icon-button small danger" (click)="deselectBike()" aria-label="Rimuovi bici">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        <div
+          *ngIf="filteredBikes.length === 0 && bookingForm.value.bikeType"
+          class="no-bikes"
+        >
+          Nessuna bici trovata
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="prev()">Indietro</button>
+        <button type="button" class="btn-primary" (click)="next()" [disabled]="!isStepValid(1)">Avanti</button>
       </div>
     </div>
 
-    <!-- STEP 3 placeholder -->
+    <!-- STEP 3 -->
     <div *ngIf="activeIndex === 2">
       <!-- contenuti step 3... -->
-      <div class="p-text-right">
-        <button pButton type="button" label="Indietro" (click)="prev()"></button>
-        <button pButton type="button" label="Conferma" (click)="submit()"></button>
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="prev()">Indietro</button>
+        <button type="button" class="btn-primary" (click)="submit()">Conferma</button>
       </div>
     </div>
   </form>

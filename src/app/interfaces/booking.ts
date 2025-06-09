@@ -2,6 +2,7 @@ import {User} from './user';
 import {Accessory} from './accessories';
 import {Insurance} from './insurance';
 import {Bike} from './bike';
+import {Location} from './location';
 
 export enum ReservationStatus {
   PENDING = 'pending',

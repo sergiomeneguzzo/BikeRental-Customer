@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoaderComponent } from './components/loader/loader.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './utils/auth.interceptor';
-import { ThemeBlue } from './theme';
+import { ThemeBlack } from './theme';
 import { providePrimeNG } from 'primeng/config';
 import { BookingComponent } from './pages/booking/booking.component';
 import { DropdownModule } from 'primeng/dropdown';
@@ -70,7 +70,7 @@ import { FooterComponent } from './shared/footer/footer.component';
     MessageService,
     providePrimeNG({
       theme: {
-        preset: ThemeBlue,
+        preset: ThemeBlack,
         options: {
           darkModeSelector: false
         }
