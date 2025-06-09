@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* styles.scss */
 $primary-color: #0f73f6;
 $light-gray: #bfbfc6;
@@ -7,7 +9,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  font-family: "Roboto", "Helvetica Neue", sans-serif;
+  font-family: "Poppins", "Helvetica Neue", sans-serif;
   min-height: 100vh;
 }
 
@@ -37,10 +39,18 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: "Poppins", "Helvetica Neue", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Poppins", "Helvetica Neue", sans-serif;
+}
