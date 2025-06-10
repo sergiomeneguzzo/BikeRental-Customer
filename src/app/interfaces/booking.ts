@@ -9,14 +9,15 @@ export interface Booking {
   userId?: User | string;
   guestEmail?: string;
   pickupDate: Date;
-  pickupLocation: Location | string;
+  pickupLocation: Location;
   dropoffDate: Date;
-  dropoffLocation: Location | string;
-  items: Bike[] | string[];
+  dropoffLocation: Location;
+  items: Bike[];
   accessories?: Accessory | string[];
   insurances?: Insurance | string[];
   extraLocationFee: number;
   totalPrice: number;
+  status?: string;
   reminderSent: boolean;
   paymentMethod?: string;
   createdAt?: Date;

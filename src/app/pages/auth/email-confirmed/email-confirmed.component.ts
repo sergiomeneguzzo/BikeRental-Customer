@@ -25,7 +25,7 @@ export class EmailConfirmedComponent implements OnInit{
 
     if (this.token) {
       this.authSrv.confirmEmail(this.token).subscribe({
-        next: () => {
+        next: (responseMessage: string) => {
           this.loading = false;
           this.confirmationStatus = 'success';
           this.message = 'La tua email è stata confermata con successo! Ora puoi accedere al tuo account.';
@@ -39,12 +39,20 @@ export class EmailConfirmedComponent implements OnInit{
           this.confirmationStatus = 'error';
           this.message = 'Si è verificato un errore durante la conferma della tua email. Riprova più tardi o contatta il supporto.';
           console.error('Errore nella conferma della email:', error);
+
+          if (error.error && error.error.message) {
+            this.message = error.error.message;
+          } else if (typeof error.error === 'string') {
+            this.message = error.error;
+          } else if (error.message) {
+            this.message = `Errore: ${error.message}`;
+          }
         }
       });
     } else {
       this.loading = false;
       this.confirmationStatus = 'invalid';
-      this.message = 'Impossibile confermare la email.';
+      this.message = 'Impossibile confermare la email. Il token non è presente o non è valido.';
       setTimeout(() => {
         this.router.navigate(['/login']);
       }, 4000);

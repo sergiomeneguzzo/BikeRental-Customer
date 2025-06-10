@@ -39,6 +39,10 @@ export class BookingService {
     return this.http.post<Booking>(`${apiUrl}/bookings/confirm`, reservation);
   }
 
+  getUserReservation(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(`${apiUrl}/bookings`);
+  }
+
   getPendingReservations(): Observable<Booking[]> {
     return this.http.get<Booking[]>(`${apiUrl}/bookings/pending`);
   }

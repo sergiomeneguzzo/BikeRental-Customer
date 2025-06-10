@@ -1,0 +1,76 @@
+<div class="booking-container">
+  <div *ngIf="isLoading">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!isLoading && currentUser">
+    <h2 style="margin-top: 3rem">Il tuo Profilo</h2>
+    <div class="user-info-card">
+      <div class="profile-image-container">
+        <img
+          [src]="currentUser.picture"
+          alt="Foto Profilo"
+          class="profile-image"
+        />
+      </div>
+      <p><strong>Nome:</strong> {{ currentUser.firstName }}</p>
+      <p><strong>Cognome:</strong> {{ currentUser.lastName }}</p>
+      <p><strong>Email:</strong> {{ currentUser.username }}</p>
+    </div>
+    <h2>Le tue Prenotazioni</h2>
+
+    <div *ngIf="userBookings.length === 0" class="no-bookings-message">
+      <p>Non hai ancora prenotazioni.</p>
+    </div>
+
+    <div *ngIf="userBookings.length > 0" class="bookings-list">
+      <div *ngFor="let booking of userBookings" class="booking-card">
+        <div class="booking-header">
+          <h3>Prenotazione ID: {{ booking.id }}</h3>
+          <span
+            class="booking-status status-{{ booking.status | lowercase }}"
+          >
+            {{ getBookingStatus(booking.status!) }}
+          </span>
+        </div>
+        <div class="booking-details">
+          <p>
+            <strong>Ritiro:</strong> {{ booking.pickupDate | date : 'short' }}
+            <br />
+            Presso:
+            {{ (booking.pickupLocation)?.name || booking.pickupLocation }}
+          </p>
+          <p>
+            <strong>Consegna:</strong>
+            {{ booking.dropoffDate | date : 'short' }} <br />
+            Presso:
+            {{ (booking.dropoffLocation)?.name || booking.dropoffLocation }}
+          </p>
+          <p>
+            <strong>Prezzo Totale:</strong>
+            €{{ booking.totalPrice | number : '1.2-2' }}
+          </p>
+          <p>
+            <strong>Bici prenotate:</strong>
+          </p>
+          <div class="bike-list">
+            <div *ngFor="let item of booking.items" class="bike-item">
+              <img
+                [src]="item.picture || 'http://googleusercontent.com/image_collection/image_retrieval/6517555087419833561'"
+                alt="Foto Bici"
+                class="bike-image-small"
+              />
+              <span>
+                {{ item?.serialNumber }} ({{ item?.sizes }});
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoading && !currentUser" class="not-logged-in-message">
+    <p>Devi essere loggato per visualizzare il tuo profilo.</p>
+  </div>
+</div>
