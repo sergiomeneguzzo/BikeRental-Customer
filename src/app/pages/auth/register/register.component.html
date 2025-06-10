@@ -34,7 +34,7 @@
           <small *ngIf="registerForm.get('username')?.hasError('required')" class="p-error">
             L'email è obbligatoria
           </small>
-          <small *ngIf="registerForm.get('username')?.hasError('email') || 
+          <small *ngIf="registerForm.get('username')?.hasError('email') ||
                    registerForm.get('username')?.hasError('invalidEmail')" class="p-error">
             Inserisci un'email valida
           </small>

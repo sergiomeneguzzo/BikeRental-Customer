@@ -10,6 +10,7 @@ import {Booking} from '../../interfaces/booking';
 import {Router} from '@angular/router';
 import {forkJoin} from 'rxjs';
 import { delay, finalize } from 'rxjs/operators';
+import {NotificationService} from '../../services/notification.service';
 
 interface ReservationStep {
   label: string;
@@ -45,7 +46,8 @@ export class BookingComponent implements OnInit{
   constructor(
     private fb: FormBuilder,
     private bookingSrv: BookingService,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) {
     this.bookingForm = this.fb.group({
       // STEP 1
@@ -277,6 +279,7 @@ export class BookingComponent implements OnInit{
     console.log('Payload reservation:', payload);
     this.bookingSrv.createReservation(payload).subscribe({
       next: reservation => {
+        this.notification.successMessage('Prenotazione richiesta con successo!', 3000);
         if (localStorage.getItem('authToken')) {
           this.router.navigate(['/booking-confirmed'], {
             queryParams: { id: reservation.id }
@@ -288,6 +291,7 @@ export class BookingComponent implements OnInit{
       },
       error: err => {
         console.error('Errore creazione prenotazione:', err);
+        this.notification.errorMessage('Si è verificato un errore durante la prenotazione. Riprova più tardi.', 5000);
       }
     });
   }

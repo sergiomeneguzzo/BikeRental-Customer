@@ -32,6 +32,8 @@ import { FooterComponent } from './shared/footer/footer.component';
 import {MultiSelect} from 'primeng/multiselect';
 import {Image} from 'primeng/image';
 import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/booking-confirmed.component';
+import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
+import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/boo
     NavbarComponent,
     FooterComponent,
     BookingConfirmedComponent,
+    CheckEmailComponent,
+    EmailConfirmedComponent,
   ],
   imports: [
     BrowserModule,

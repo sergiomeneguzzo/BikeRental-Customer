@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <div *ngIf="loading">
+        <i class="pi pi-spin pi-spinner icon loading-icon"></i>
+        <h2>Conferma in corso...</h2>
+      </div>
+      <div *ngIf="!loading && confirmationStatus === 'success'">
+        <i class="pi pi-check-circle icon success-icon"></i>
+        <h2>Conferma Completata!</h2>
+      </div>
+      <div *ngIf="!loading && (confirmationStatus === 'error' || confirmationStatus === 'invalid')">
+        <i class="pi pi-times-circle icon error-icon"></i>
+        <h2>Errore di Conferma</h2>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>{{ message }}</p>
+    </div>
+    <div class="card-footer">
+      <button *ngIf="confirmationStatus === 'success'" class="btn-primary" (click)="goToLogin()">Accedi</button>
+    </div>
+  </div>
+</div>
