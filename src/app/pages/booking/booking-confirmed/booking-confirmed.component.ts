@@ -20,6 +20,6 @@ export class BookingConfirmedComponent implements OnInit{
   }
 
   goToMyBookings(): void {
-    this.router.navigate(['/profile']);
+    this.router.navigate(['/account']);
   }
 }

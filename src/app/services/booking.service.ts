@@ -40,7 +40,7 @@ export class BookingService {
   }
 
   getUserReservation(): Observable<Booking[]> {
-    return this.http.get<Booking[]>(`${apiUrl}/bookings`);
+    return this.http.get<Booking[]>(`${apiUrl}/bookings/user`);
   }
 
   getPendingReservations(): Observable<Booking[]> {
