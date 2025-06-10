@@ -40,6 +40,7 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 import {BackgroundComponent} from './shared/background/background.component';
 import { EditBookingComponent } from './pages/booking/edit-booking/edit-booking.component';
 import {InputNumber} from "primeng/inputnumber";
+import {DatePicker} from 'primeng/datepicker';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import {InputNumber} from "primeng/inputnumber";
     StepsModule,
     MultiSelect,
     Image,
-    InputNumber
+    InputNumber,
+    DatePicker
   ],
   providers: [
     provideAnimationsAsync(),

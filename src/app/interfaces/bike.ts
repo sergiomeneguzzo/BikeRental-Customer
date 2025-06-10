@@ -8,7 +8,8 @@ export enum BikeStatus {
 }
 
 export interface Bike {
-  _id?: string;
+  _id: string;
+  id?: string;
   bikeType: BikeType;
   serialNumber?: string;
   currentLocation: Location | string;

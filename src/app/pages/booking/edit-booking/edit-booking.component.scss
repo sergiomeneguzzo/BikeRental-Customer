@@ -24,11 +24,10 @@ h2 {
     color: #555;
   }
 
-  // Stili per i componenti PrimeNG
-  p-calendar, p-dropdown, p-multiselect, p-inputnumber {
+  p-datePicker, p-dropdown, p-multiselect, p-inputnumber {
     width: 100%;
 
-    .p-calendar, .p-dropdown, .p-multiselect {
+    .p-datePicker, .p-dropdown, .p-multiselect {
       .p-inputtext {
         width: 100%;
         padding: 0.75rem 1rem;

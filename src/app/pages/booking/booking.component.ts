@@ -134,7 +134,7 @@ export class BookingComponent implements OnInit{
       .getBikes(locId, pu, doff)
       .subscribe(all => {
         this.filteredBikes = all.filter(b => {
-          const bt = typeof b.bikeType === 'string' ? b.bikeType : (b.bikeType as any)._id;
+          const bt = typeof b.bikeType === 'string' ? b.bikeType : (b.bikeType)._id;
           return bt === typeId;
         });
       });
@@ -185,7 +185,7 @@ export class BookingComponent implements OnInit{
   getTotalPriceByInsuranceAndAccessories(): number {
     let total = 0;
 
-    const bike = this.filteredBikes.find(b => b._id === this.bookingForm.value.bikeId);
+    const bike = this.filteredBikes.find(b => b.id === this.bookingForm.value.bikeId);
     if (bike) {
       total += this.getTotalPrice(bike);
     }
