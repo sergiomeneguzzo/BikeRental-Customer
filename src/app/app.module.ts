@@ -34,6 +34,7 @@ import {Image} from 'primeng/image';
 import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/booking-confirmed.component';
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
+import { UserComponent } from './pages/user/user.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-conf
     BookingConfirmedComponent,
     CheckEmailComponent,
     EmailConfirmedComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,
