@@ -3,7 +3,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {map, Observable} from 'rxjs';
 import {apiUrl} from '../../../secrets';
 import {Location} from '../interfaces/location';
-import {Bike, BikeType} from '../interfaces/bike';
+import {Bike, BikeType, BikeWithBusy} from '../interfaces/bike';
 import {Insurance} from '../interfaces/insurance';
 import {Accessory} from '../interfaces/accessories';
 import {Booking} from '../interfaces/booking';
@@ -35,12 +35,17 @@ export class BookingService {
     return this.http.post<Booking>(`${apiUrl}/bookings`, reservation);
   }
 
-  getBikes(locationId: string, date?: Date): Observable<Bike[]> {
-    let params = new HttpParams().set('location', locationId);
-    if (date) params = params.set('date', date.toISOString());
+  getBikes(
+    locationId: string,
+    start?: Date,
+    end?: Date
+  ): Observable<BikeWithBusy[]> {
+    let params = new HttpParams().set('locationId', locationId);
+    if (start) params = params.set('start', start.toISOString());
+    if (end)   params = params.set('end',   end.toISOString());
+
     return this.http
-      .get<{ bikes: Bike[] }>(`${apiUrl}/bikes`, { params })
+      .get<{ bikes: BikeWithBusy[] }>(`${apiUrl}/bikes`, { params })
       .pipe(map(res => res.bikes));
   }
-
 }

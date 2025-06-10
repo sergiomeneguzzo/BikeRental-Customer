@@ -29,3 +29,12 @@ export interface BikeType {
   motorType: string;
   PriceHalfDay: number;
 }
+
+export interface BusySlot {
+  start: Date;
+  end: Date;
+}
+
+export interface BikeWithBusy extends Bike {
+  busySlots: BusySlot[];
+}

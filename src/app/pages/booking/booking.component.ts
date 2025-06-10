@@ -92,6 +92,7 @@ export class BookingComponent implements OnInit{
         }
       });
     this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
+      this.pickupDate = value;
     });
     this.bookingForm.get('pickupLocation')?.valueChanges.subscribe(() => {
     });
@@ -118,29 +119,20 @@ export class BookingComponent implements OnInit{
     return priceHalf * this.halfDays;
   }
 
-  updateExtraFee(): void {
-    const pu = this.bookingForm.get('pickupLocation')!.value;
-    const doff = this.bookingForm.get('dropoffLocation')!.value;
-    const extra = pu && doff && pu !== doff;
-    this.bookingForm.patchValue({ extraLocationFee: extra }, { emitEvent: false });
-  }
-
   selectBikeType(typeId: string): void {
     this.bookingForm.patchValue({ bikeType: typeId, bikeId: null });
-    const locId = this.bookingForm.get('pickupLocation')!.value;
-    const date: Date = this.bookingForm.get('pickupDate')!.value;
-
-    if (!locId) {
+    const locId = this.bookingForm.value.pickupLocation;
+    const pu    = this.bookingForm.value.pickupDate;
+    const doff  = this.bookingForm.value.dropoffDate;
+    if (!locId || !pu || !doff) {
+      this.filteredBikes = [];
       return;
     }
-
     this.bookingSrv
-      .getBikes(locId, date)
+      .getBikes(locId, pu, doff)
       .subscribe(all => {
         this.filteredBikes = all.filter(b => {
-          const bt = typeof b.bikeType === 'string'
-            ? b.bikeType
-            : (b.bikeType as any)._id;
+          const bt = typeof b.bikeType === 'string' ? b.bikeType : (b.bikeType as any)._id;
           return bt === typeId;
         });
       });

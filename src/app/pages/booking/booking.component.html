@@ -168,7 +168,7 @@
           *ngIf="filteredBikes.length === 0 && bookingForm.value.bikeType"
           class="no-bikes"
         >
-          Nessuna bici trovata
+          Nessuna bici trovata nelle date e luogo selezionato
         </div>
       </div>
 
@@ -265,7 +265,7 @@
           <strong>Totale prenotazione:</strong>
           {{
             getTotalPriceByInsuranceAndAccessories()
-              | number:'1.0-0'
+              | number:'1.2-2'
           }} €
         </p>
       </div>
