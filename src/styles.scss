@@ -44,3 +44,30 @@ body {
     width: 18.4rem;
   }
 }
+
+.navbar .p-button-label,
+p-popover.p-button-text {
+  font-weight: 400 !important;
+  color: #000 !important;
+}
+
+button.p-button-text.w-full.text-left.p-button.p-component {
+  padding-block: 0;
+  color: #000;
+
+}
+
+span.p-button-label {
+  font-weight: 400 !important;
+}
+
+
+.navbar .p-button-text {
+  color: #000;
+}
+
+.navbar button.p-button.account {
+
+  padding-block: 0 !important;
+  padding-inline: 0 !important;
+}
