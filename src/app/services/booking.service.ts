@@ -47,6 +47,10 @@ export class BookingService {
     return this.http.get<Booking[]>(`${apiUrl}/bookings/pending`);
   }
 
+  cancelReservation(bookingId: string): Observable<any> {
+    return this.http.put(`${apiUrl}/bookings/cancel/${bookingId}`, {});
+  }
+
   getBikes(
     locationId: string,
     start?: Date,

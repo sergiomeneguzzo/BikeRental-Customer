@@ -65,6 +65,22 @@
             </div>
           </div>
         </div>
+
+        <div class="booking-actions" *ngIf="canShowActions(booking.status!)">
+          <button class="btn-secondary"
+                  [disabled]="isActionDisabledDueToTime(booking.pickupDate)"
+                  (click)="!isActionDisabledDueToTime(booking.pickupDate) ? onModifyBooking(booking._id!) : showNotModifiableAlert()">
+            Modifica
+          </button>
+          <button class="btn-danger"
+                  [disabled]="isActionDisabledDueToTime(booking.pickupDate)"
+                  (click)="!isActionDisabledDueToTime(booking.pickupDate) ? openCancelModal(booking._id!) : showNotModifiableAlert()">
+            Cancella
+          </button>
+          <p *ngIf="isActionDisabledDueToTime(booking.pickupDate)" class="alert-message">
+            Non è più possibile modificare o cancellare la prenotazione entro 2 giorni.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -73,3 +89,11 @@
     <p>Devi essere loggato per visualizzare il tuo profilo.</p>
   </div>
 </div>
+
+<app-confirmation-modal
+  [isOpen]="showCancelModal"
+  title="Conferma Cancellazione"
+  message="Sei sicuro di voler cancellare questa prenotazione? Questa azione non può essere annullata."
+  (confirm)="onConfirmCancel()"
+  (cancel)="onCancelModalClose()"
+></app-confirmation-modal>

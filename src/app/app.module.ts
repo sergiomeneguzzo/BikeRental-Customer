@@ -36,7 +36,8 @@ import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/boo
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 import { UserComponent } from './pages/user/user.component';
-import { BackgroundComponent } from './shared/background/background.component';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import {BackgroundComponent} from './shared/background/background.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { BackgroundComponent } from './shared/background/background.component';
     CheckEmailComponent,
     EmailConfirmedComponent,
     UserComponent,
+    ConfirmationModalComponent,
     BackgroundComponent,
   ],
   imports: [

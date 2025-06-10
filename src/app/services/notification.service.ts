@@ -19,6 +19,10 @@ export class NotificationService {
     this.showMessage('warn', 'Attenzione', message, duration);
   }
 
+  infoMessage(message: string, duration: number = 3000): void {
+    this.showMessage('info', 'Informazione', message, duration);
+  }
+
   private showMessage(severity: string, summary: string, detail: string, life: number): void {
     this.messageService.add({ severity, summary, detail, life });
   }

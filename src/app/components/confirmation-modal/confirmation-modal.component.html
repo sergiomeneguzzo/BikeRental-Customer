@@ -1,0 +1,10 @@
+<div class="modal-overlay" *ngIf="isOpen">
+  <div class="modal-content">
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+    <div class="modal-actions">
+      <button class="btn-secondary" (click)="onCancel()">Annulla</button>
+      <button class="btn-danger" (click)="onConfirm()">Conferma</button>
+    </div>
+  </div>
+</div>

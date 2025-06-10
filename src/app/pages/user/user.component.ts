@@ -5,6 +5,7 @@ import {Booking} from '../../interfaces/booking';
 import {AuthService} from '../../services/auth.service';
 import {BookingService} from '../../services/booking.service';
 import {NotificationService} from '../../services/notification.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-user',
@@ -18,20 +19,34 @@ export class UserComponent implements OnInit, OnDestroy{
   isLoading = true;
   private destroyed$ = new Subject<void>();
 
+  showCancelModal = false;
+  selectedBookingIdForCancel: string | null = null;
+
   constructor(
     private authSrv: AuthService,
     private bookingSrv: BookingService,
-    private notify: NotificationService
+    private notify: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.loadUserBookings();
+    this.authSrv.fetchUser();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  loadUserBookings(): void {
+    this.isLoading = true;
     this.authSrv.currentUser$
       .pipe(
         takeUntil(this.destroyed$),
         filter(user => user !== null),
         switchMap(user => {
           this.currentUser = user;
-          this.isLoading = true;
           return this.bookingSrv.getUserReservation();
         }),
         catchError(err => {
@@ -49,12 +64,6 @@ export class UserComponent implements OnInit, OnDestroy{
           console.log('User bookings:', this.userBookings);
         }
       });
-    this.authSrv.fetchUser();
-    this.isLoading = true;
-  }
-  ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   getBookingStatus(status: string): string {
@@ -70,5 +79,52 @@ export class UserComponent implements OnInit, OnDestroy{
       default:
         return status;
     }
+  }
+
+  canShowActions(status: string): boolean {
+    return status !== 'cancelled';
+  }
+
+  isActionDisabledDueToTime(pickupDate: Date | string): boolean {
+    const today = new Date();
+    const pickup = new Date(pickupDate);
+    const diffTime = pickup.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 2;
+  }
+
+  showNotModifiableAlert(): void {
+    this.notify.warningMessage('Non è più possibile modificare o cancellare la prenotazione entro 2 giorni dalla data di ritiro.');
+  }
+
+  onModifyBooking(bookingId: string): void {
+    this.notify.infoMessage(`Funzionalità di modifica per la prenotazione ${bookingId} da implementare.`);
+  }
+
+  openCancelModal(bookingId: string): void {
+    this.selectedBookingIdForCancel = bookingId;
+    this.showCancelModal = true;
+  }
+
+  onConfirmCancel(): void {
+    if (this.selectedBookingIdForCancel) {
+      this.bookingSrv.cancelReservation(this.selectedBookingIdForCancel).subscribe({
+        next: () => {
+          this.notify.successMessage('Prenotazione cancellata con successo!');
+          this.loadUserBookings();
+          this.selectedBookingIdForCancel = null;
+        },
+        error: (err) => {
+          this.notify.errorMessage('Errore durante la cancellazione della prenotazione.');
+          console.error('Errore cancellazione:', err);
+        }
+      });
+    }
+    this.showCancelModal = false;
+  }
+
+  onCancelModalClose(): void {
+    this.showCancelModal = false;
+    this.selectedBookingIdForCancel = null;
   }
 }
