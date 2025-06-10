@@ -1,0 +1,161 @@
+<div class="edit-booking-container">
+  <div *ngIf="isLoading" class="loading-overlay">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!isLoading">
+    <h2>Modifica Prenotazione</h2>
+    <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="pickupDate">Data Ritiro:</label>
+        <p-calendar
+          id="pickupDate"
+          formControlName="pickupDate"
+          [minDate]="minDate"
+          [maxDate]="maxDate"
+          [inline]="false"
+          [showTime]="true"
+          hourFormat="24"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [disabledDates]="invalidDates"
+          [readonlyInput]="true"
+        ></p-calendar>
+        <div *ngIf="bookingForm.get('pickupDate')?.invalid && (bookingForm.get('pickupDate')?.dirty || bookingForm.get('pickupDate')?.touched)" class="error-message">
+          Data ritiro obbligatoria.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dropoffDate">Data Consegna:</label>
+        <p-calendar
+          id="dropoffDate"
+          formControlName="dropoffDate"
+          [minDate]="bookingForm.get('pickupDate')?.value || minDate"
+          [maxDate]="maxDate"
+          [inline]="false"
+          [showTime]="true"
+          hourFormat="24"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [disabledDates]="invalidDates"
+          [readonlyInput]="true"
+        ></p-calendar>
+        <div *ngIf="bookingForm.get('dropoffDate')?.invalid && (bookingForm.get('dropoffDate')?.dirty || bookingForm.get('dropoffDate')?.touched)" class="error-message">
+          Data consegna obbligatoria.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="pickupLocation">Luogo Ritiro:</label>
+        <p-dropdown
+          id="pickupLocation"
+          formControlName="pickupLocation"
+          [options]="locations"
+          optionLabel="name"
+          placeholder="Seleziona luogo di ritiro"
+          [filter]="true"
+        ></p-dropdown>
+        <div *ngIf="bookingForm.get('pickupLocation')?.invalid && (bookingForm.get('pickupLocation')?.dirty || bookingForm.get('pickupLocation')?.touched)" class="error-message">
+          Luogo ritiro obbligatorio.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="dropoffLocation">Luogo Consegna:</label>
+        <p-dropdown
+          id="dropoffLocation"
+          formControlName="dropoffLocation"
+          [options]="locations"
+          optionLabel="name"
+          placeholder="Seleziona luogo di consegna"
+          [filter]="true"
+        ></p-dropdown>
+        <div *ngIf="bookingForm.get('dropoffLocation')?.invalid && (bookingForm.get('dropoffLocation')?.dirty || bookingForm.get('dropoffLocation')?.touched)" class="error-message">
+          Luogo consegna obbligatorio.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="items">Bici:</label>
+        <p-multiSelect
+          id="items"
+          formControlName="items"
+          [options]="availableBikes"
+          optionLabel="serialNumber"
+          optionValue="_id"
+          display="chip"
+          placeholder="Seleziona le bici"
+          [filter]="true"
+        >
+          <ng-template let-bike pTemplate="item">
+            <div>
+              <img [src]="bike.picture" alt="Bike Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+              {{ bike.serialNumber }} ({{ bike.sizes?.[0]?.sizeLabel }}) -
+              {{ (bike.bikeType)?.PriceHalfDay | currency:'EUR':'symbol':'1.2-2' }}/mezza giornata
+            </div>
+          </ng-template>
+        </p-multiSelect>
+        <div *ngIf="bookingForm.get('items')?.invalid && (bookingForm.get('items')?.dirty || bookingForm.get('items')?.touched)" class="error-message">
+          Almeno una bici è obbligatoria.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="accessories">Accessori:</label>
+        <p-multiSelect
+          id="accessories"
+          formControlName="accessories"
+          [options]="accessories"
+          optionLabel="name"
+          optionValue="_id"
+          display="chip"
+          placeholder="Seleziona accessori (opzionale)"
+          [filter]="true"
+        >
+          <ng-template let-accessory pTemplate="item">
+            <div>
+              {{ accessory.name }} - {{ accessory.rentalPricePerDay | currency:'EUR':'symbol':'1.2-2' }}/giorno
+            </div>
+          </ng-template>
+        </p-multiSelect>
+      </div>
+
+      <div class="form-group">
+        <label for="insurances">Assicurazioni:</label>
+        <p-multiSelect
+          id="insurances"
+          formControlName="insurances"
+          [options]="insurances"
+          optionLabel="name"
+          optionValue="_id"
+          display="chip"
+          placeholder="Seleziona assicurazioni (opzionale)"
+          [filter]="true"
+        >
+          <ng-template let-insurance pTemplate="item">
+            <div>
+              {{ insurance.name }} - {{ insurance.price | currency:'EUR':'symbol':'1.2-2' }}/giorno
+            </div>
+          </ng-template>
+        </p-multiSelect>
+      </div>
+
+      <div class="total-price-section">
+        <strong>Prezzo Totale:</strong>
+        <p-inputNumber
+          formControlName="totalPrice"
+          mode="currency"
+          currency="EUR"
+          locale="it-IT"
+          [readonly]="true"
+        ></p-inputNumber>
+      </div>
+
+      <div class="form-actions">
+        <button pButton type="submit" label="Salva Modifiche" [disabled]="bookingForm.invalid || isLoading"></button>
+        <button pButton type="button" label="Annulla" class="p-button-secondary" (click)="cancelEdit()"></button>
+      </div>
+    </form>
+  </div>
+</div>

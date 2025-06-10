@@ -10,14 +10,14 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class EmailConfirmedComponent implements OnInit{
   token: string | null = null;
-  loading: boolean = true;
+  loading = true;
   confirmationStatus: 'success' | 'error' | 'invalid' | null = null;
-  message: string = '';
+  message = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authSrv: AuthService,
+    private authSrv: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -25,14 +25,10 @@ export class EmailConfirmedComponent implements OnInit{
 
     if (this.token) {
       this.authSrv.confirmEmail(this.token).subscribe({
-        next: (responseMessage: string) => {
+        next: () => {
           this.loading = false;
           this.confirmationStatus = 'success';
           this.message = 'La tua email è stata confermata con successo! Ora puoi accedere al tuo account.';
-
-          setTimeout(() => {
-            this.router.navigate(['/login']);
-          }, 5000);
         },
         error: (error) => {
           this.loading = false;
@@ -53,9 +49,6 @@ export class EmailConfirmedComponent implements OnInit{
       this.loading = false;
       this.confirmationStatus = 'invalid';
       this.message = 'Impossibile confermare la email. Il token non è presente o non è valido.';
-      setTimeout(() => {
-        this.router.navigate(['/login']);
-      }, 4000);
     }
   }
 

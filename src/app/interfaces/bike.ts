@@ -1,3 +1,4 @@
+import {Location} from './location';
 
 export enum BikeStatus {
   AVAILABLE = 'available',
@@ -7,7 +8,7 @@ export enum BikeStatus {
 }
 
 export interface Bike {
-  id?: string;
+  _id?: string;
   bikeType: BikeType;
   serialNumber?: string;
   currentLocation: Location | string;

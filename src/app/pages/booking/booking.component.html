@@ -145,15 +145,15 @@
 
             <p *ngIf="bike.notes"><strong>Note:</strong> {{ bike.notes }}</p>
             <button
-              *ngIf="bookingForm.value.bikeId !== bike.id"
+              *ngIf="bookingForm.value.bikeId !== bike._id"
               type="button"
               class="icon-button left small"
-              (click)="selectBike(bike.id!)">
+              (click)="selectBike(bike._id!)">
               <i class="pi pi-plus icon"></i>
               Aggiungi
             </button>
 
-            <div *ngIf="bookingForm.value.bikeId === bike.id" class="selected-actions left">
+            <div *ngIf="bookingForm.value.bikeId === bike._id" class="selected-actions left">
               <button type="button" class="icon-button small selected animate" aria-label="Selezionata">
                 <i class="pi pi-check"></i>
               </button>

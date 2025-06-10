@@ -30,19 +30,19 @@
           <span
             class="booking-status status-{{ booking.status | lowercase }}"
           >
-            {{ getBookingStatus(booking.status!) }}
+             {{ getBookingStatus(booking.status!) }}
           </span>
         </div>
         <div class="booking-details">
           <p>
-            <strong>Ritiro:</strong> {{ booking.pickupDate | date : 'short' }}
+            <strong>Ritiro:</strong> {{ booking.pickupDate | date : 'dd/MM/yyyy HH:mm' }}
             <br />
             Presso:
             {{ (booking.pickupLocation)?.name || booking.pickupLocation }}
           </p>
           <p>
             <strong>Consegna:</strong>
-            {{ booking.dropoffDate | date : 'short' }} <br />
+            {{ booking.dropoffDate | date : 'dd/MM/yyyy HH:mm' }} <br />
             Presso:
             {{ (booking.dropoffLocation)?.name || booking.dropoffLocation }}
           </p>

@@ -185,7 +185,7 @@ export class BookingComponent implements OnInit{
   getTotalPriceByInsuranceAndAccessories(): number {
     let total = 0;
 
-    const bike = this.filteredBikes.find(b => b.id === this.bookingForm.value.bikeId);
+    const bike = this.filteredBikes.find(b => b._id === this.bookingForm.value.bikeId);
     if (bike) {
       total += this.getTotalPrice(bike);
     }

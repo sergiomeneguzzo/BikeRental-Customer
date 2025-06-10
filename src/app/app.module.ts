@@ -38,6 +38,8 @@ import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-conf
 import { UserComponent } from './pages/user/user.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import {BackgroundComponent} from './shared/background/background.component';
+import { EditBookingComponent } from './pages/booking/edit-booking/edit-booking.component';
+import {InputNumber} from "primeng/inputnumber";
 
 @NgModule({
   declarations: [
@@ -55,6 +57,7 @@ import {BackgroundComponent} from './shared/background/background.component';
     UserComponent,
     ConfirmationModalComponent,
     BackgroundComponent,
+    EditBookingComponent,
   ],
   imports: [
     BrowserModule,
@@ -79,7 +82,8 @@ import {BackgroundComponent} from './shared/background/background.component';
     ToastModule,
     StepsModule,
     MultiSelect,
-    Image
+    Image,
+    InputNumber
   ],
   providers: [
     provideAnimationsAsync(),

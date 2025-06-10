@@ -9,6 +9,8 @@ import {CheckEmailComponent} from './pages/auth/check-email/check-email.componen
 import {EmailConfirmedComponent} from './pages/auth/email-confirmed/email-confirmed.component';
 import {homeGuard} from './guards/home.guard';
 import {UserComponent} from './pages/user/user.component';
+import {authGuard} from './guards/auth.guard';
+import {EditBookingComponent} from './pages/booking/edit-booking/edit-booking.component';
 
 const routes: Routes = [
   // Redirect dalla root a /home
@@ -21,7 +23,8 @@ const routes: Routes = [
   { path: 'email-confirmed', component: EmailConfirmedComponent },
   { path: 'booking', component: BookingComponent },
   { path: 'booking-confirmed', component: BookingConfirmedComponent },
-  { path: 'account', component: UserComponent },
+  { path: 'account', component: UserComponent, canActivate: [authGuard]  },
+  { path: 'edit-booking/:id', component: EditBookingComponent, canActivate: [authGuard] },
 ];
 
 @NgModule({

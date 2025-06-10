@@ -51,6 +51,14 @@ export class BookingService {
     return this.http.put(`${apiUrl}/bookings/cancel/${bookingId}`, {});
   }
 
+  getBookingById(id: string): Observable<Booking> {
+    return this.http.get<Booking>(`${apiUrl}/bookings/${id}`);
+  }
+
+  updateBooking(id: string, updateData: any): Observable<Booking> {
+    return this.http.put<Booking>(`${apiUrl}/bookings/${id}`, updateData);
+  }
+
   getBikes(
     locationId: string,
     start?: Date,
@@ -63,5 +71,10 @@ export class BookingService {
     return this.http
       .get<{ bikes: BikeWithBusy[] }>(`${apiUrl}/bikes`, { params })
       .pipe(map(res => res.bikes));
+  }
+
+  getUnavailableDatesByLocation(locationId: string): Observable<string[]> {
+    let params = new HttpParams().set('locationId', locationId);
+    return this.http.get<string[]>(`${apiUrl}/bookings/unavailable-dates`, { params });
   }
 }

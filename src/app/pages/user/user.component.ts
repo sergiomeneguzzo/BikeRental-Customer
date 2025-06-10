@@ -98,7 +98,7 @@ export class UserComponent implements OnInit, OnDestroy{
   }
 
   onModifyBooking(bookingId: string): void {
-    this.notify.infoMessage(`Funzionalità di modifica per la prenotazione ${bookingId} da implementare.`);
+    this.router.navigate(['/edit-booking', bookingId]);
   }
 
   openCancelModal(bookingId: string): void {
