@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Subject, takeUntil, catchError, throwError } from 'rxjs';
+import {Subject, takeUntil, catchError, throwError, forkJoin, switchMap} from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
+import {BookingService} from '../../../services/booking.service';
 
 @Component({
   selector: 'app-login',
@@ -23,11 +24,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   constructor(
     protected fb: FormBuilder,
     private authSrv: AuthService,
+    private bookingSrv: BookingService,
     private router: Router,
     private notify: NotificationService
   ) {
     this.loginForm = this.fb.group({
-      username: ['', { validators: Validators.required }],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
   }
@@ -46,33 +48,47 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      const { username, password } = this.loginForm.value;
-      this.authSrv
-        .login(username!, password!)
-        .pipe(
-          catchError((err) => {
-            this.isLoading = false;
-            if (err.error?.message === 'email not confirmed') {
-              this.isLoading = false;
-              this.notify.errorMessage(
-                'Your email has not been confirmed. Please check your inbox!'
-              );
-            } else {
-              this.isLoading = false;
-              this.notify.errorMessage('Credenziali errate o invalide');
-            }
-            return throwError(() => err);
-          })
-        )
-        .subscribe({
-          next: (user) => {
-            this.isLoading = false;
-            this.router.navigate(['/home']);
-          },
-          error: () => {},
-        });
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      this.notify.errorMessage('Compila correttamente tutti i campi.');
+      return;
     }
+
+    this.isLoading = true;
+    const {username, password} = this.loginForm.value;
+
+    this.authSrv.login(username!, password!)
+      .pipe(
+        switchMap(user =>
+          this.bookingSrv.getPendingReservations()
+            .pipe(
+              switchMap(resvs =>
+                forkJoin(
+                  resvs.map(r => this.bookingSrv.confirmReservation(r))
+                )
+              )
+            )
+        ),
+        catchError(err => {
+          this.isLoading = false;
+          if (err.error?.message === 'email not confirmed') {
+            this.notify.errorMessage(
+              'La tua email non è confermata. Controlla la posta!'
+            );
+          } else {
+            this.notify.errorMessage('Credenziali errate o invalide');
+          }
+          return throwError(() => err);
+        })
+      )
+      .subscribe({
+        next: (user) => {
+          this.isLoading = false;
+          this.notify.successMessage('Accesso effettuato con successo!');
+          this.router.navigate(['/home']);
+        },
+        error: () => {
+        },
+      });
   }
 }

@@ -1,14 +1,13 @@
 <div class="login-container">
-  <p-card>
-    <ng-template pTemplate="header">
-      <h1>Benvenuto</h1>
+  <div class="login-card">
+    <div class="card-header">
+      <h1 class="login-title">Benvenuto</h1>
       <p class="subtitle">Accedi al tuo account</p>
-    </ng-template>
-    <ng-template pTemplate="content">
+    </div>
+    <div class="card-content">
       <form [formGroup]="loginForm" (ngSubmit)="login()" autocomplete="off">
         <div class="form-container">
-          <!-- Username -->
-          <div class="p-field full-width">
+          <div class="form-field">
             <label for="username">Email</label>
             <input
               id="username"
@@ -17,32 +16,36 @@
               placeholder="Inserisci username"
               required
               autocomplete="username"
-            />
-            <small *ngIf="loginForm.get('username')?.hasError('required')" class="p-error">
-              Email è obbligatorio
+              type="email" />
+            <small *ngIf="loginForm.get('username')?.hasError('required') && loginForm.get('username')?.touched" class="p-error">
+              Email è obbligatoria
+            </small>
+            <small *ngIf="loginForm.get('username')?.hasError('email') && loginForm.get('username')?.touched" class="p-error">
+              Inserisci un'email valida
             </small>
           </div>
 
-          <!-- Password -->
-          <div class="p-field full-width">
+          <div class="form-field">
             <label for="password">Password</label>
             <p-password
               id="password"
+              class="p-password-input block w-full border-round"
               formControlName="password"
+              placeholder="Password"
+              promptLabel="Scegli una password"
+              weakLabel="Troppo debole"
+              mediumLabel="Password media"
+              strongLabel="Password sicura!"
               [toggleMask]="true"
-              placeholder="Inserisci password"
-              required
             ></p-password>
-            <small *ngIf="loginForm.get('password')?.hasError('required')" class="p-error">
+            <small *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched" class="p-error">
               Password è obbligatoria
             </small>
           </div>
 
-          <!-- Pulsante di login -->
           <button
-            pButton
             type="submit"
-            class="login-button"
+            class="btn-primary"
             [disabled]="isLoading"
           >
             <i
@@ -50,7 +53,7 @@
               class="pi pi-spin pi-spinner"
               style="margin-right: .5em;"
             ></i>
-            <span *ngIf="!isLoading">Accedi</span>
+            <span>Accedi</span>
           </button>
         </div>
 
@@ -59,6 +62,6 @@
           <a routerLink="/register">Registrati</a>
         </div>
       </form>
-    </ng-template>
-  </p-card>
+    </div>
+  </div>
 </div>

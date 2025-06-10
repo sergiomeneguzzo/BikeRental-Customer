@@ -33,3 +33,14 @@ body {
   margin: 0;
   font-family: "Poppins", sans-serif;
 }
+
+.p-password-input {
+  width: 26rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+
+  @media screen and (max-width: 600px) {
+    width: 18.4rem;
+  }
+}
