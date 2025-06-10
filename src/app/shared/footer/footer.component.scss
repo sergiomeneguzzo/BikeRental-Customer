@@ -7,7 +7,7 @@ footer {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 3.3em;
+  gap: 2.3em;
 }
 
 .links-top-footer,
@@ -17,7 +17,13 @@ footer {
   ;
 }
 
-.links-footer a {
+.links-top-footer a,
+.links-bottom-footer a {
   font-size: 0.85rem;
-  font-weight: 300;
+  font-weight: 400;
+  color: #000;
+}
+
+.links-bottom-footer a {
+  opacity: 0.5;
 }
