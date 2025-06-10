@@ -17,7 +17,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #f5f7ff 0%, #c3e0ff 100%);
   padding: 2rem 1rem;
 
   @include mobile {
@@ -120,7 +119,7 @@
   font-size: 0.9rem;
 
   a {
-    color: $primary-color;
+    color: #000;
     text-decoration: none;
     font-weight: 500;
 
