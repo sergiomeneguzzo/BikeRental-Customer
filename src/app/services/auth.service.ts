@@ -98,8 +98,8 @@ export class AuthService {
     return this.http.patch<any>(`${apiUrl}/users/updatePassword`, body);
   }
 
-  confirmEmail(token: string): Observable<any> {
-    return this.http.post(`${apiUrl}/users/email-confirmation`, { token });
+  confirmEmail(token: string): Observable<string> {
+    return this.http.post(`${apiUrl}/users/email-confirmation`, { token }, { responseType: 'text' });
   }
 
   updateUserPicture(url: string): Observable<any> {

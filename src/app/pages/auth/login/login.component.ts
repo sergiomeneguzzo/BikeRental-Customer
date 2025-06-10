@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import {Subject, takeUntil, catchError, throwError, forkJoin, switchMap} from 'rxjs';
+import {Subject, takeUntil, catchError, throwError, forkJoin, switchMap, of, map} from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import {BookingService} from '../../../services/booking.service';
@@ -62,11 +62,16 @@ export class LoginComponent implements OnInit, OnDestroy {
         switchMap(user =>
           this.bookingSrv.getPendingReservations()
             .pipe(
-              switchMap(resvs =>
-                forkJoin(
-                  resvs.map(r => this.bookingSrv.confirmReservation(r))
-                )
-              )
+              switchMap(resvs => {
+                if (resvs.length > 0) {
+                  return forkJoin(
+                    resvs.map(r => this.bookingSrv.confirmReservation(r))
+                  );
+                } else {
+                  return of(user);
+                }
+              }),
+              map(() => user)
             )
         ),
         catchError(err => {
