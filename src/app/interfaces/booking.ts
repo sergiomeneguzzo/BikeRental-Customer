@@ -5,7 +5,7 @@ import {Bike} from './bike';
 import {Location} from './location';
 
 export interface Booking {
-  id?: string;
+  _id?: string;
   userId?: User | string;
   guestEmail?: string;
   pickupDate: Date;

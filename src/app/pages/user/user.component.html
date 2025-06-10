@@ -26,7 +26,7 @@
     <div *ngIf="userBookings.length > 0" class="bookings-list">
       <div *ngFor="let booking of userBookings" class="booking-card">
         <div class="booking-header">
-          <h3>Prenotazione ID: {{ booking.id }}</h3>
+          <h3>Prenotazione:</h3>
           <span
             class="booking-status status-{{ booking.status | lowercase }}"
           >
@@ -56,13 +56,12 @@
           <div class="bike-list">
             <div *ngFor="let item of booking.items" class="bike-item">
               <img
-                [src]="item.picture || 'http://googleusercontent.com/image_collection/image_retrieval/6517555087419833561'"
+                [src]="item.picture"
                 alt="Foto Bici"
                 class="bike-image-small"
               />
               <span>
-                {{ item?.serialNumber }} ({{ item?.sizes }});
-              </span>
+                {{ item?.serialNumber }} ({{ item?.sizes?.[0]?.sizeLabel }}); </span>
             </div>
           </div>
         </div>

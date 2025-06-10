@@ -239,18 +239,19 @@ export class BookingComponent implements OnInit{
   }
 
   private normalizeToHourOnly(date: Date, type: 'pickup' | 'dropoff'): void {
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
-
+    const utcDate = new Date(date.getTime());
+    utcDate.setUTCMilliseconds(0);
+    utcDate.setUTCSeconds(0);
+    utcDate.setUTCMinutes(0);
     if (type === 'pickup') {
-      this.bookingForm.patchValue({ pickupDate: new Date(date) });
+      this.bookingForm.patchValue({ pickupDate: utcDate });
     } else {
-      this.bookingForm.patchValue({ dropoffDate: new Date(date) });
+      this.bookingForm.patchValue({ dropoffDate: utcDate });
     }
   }
 
   submit(): void {
+    this.loading = true;
     if (this.bookingForm.invalid) {
       return;
     }
@@ -279,10 +280,11 @@ export class BookingComponent implements OnInit{
     console.log('Payload reservation:', payload);
     this.bookingSrv.createReservation(payload).subscribe({
       next: reservation => {
+        this.loading = false;
         this.notification.successMessage('Prenotazione richiesta con successo!', 3000);
         if (localStorage.getItem('authToken')) {
           this.router.navigate(['/booking-confirmed'], {
-            queryParams: { id: reservation.id }
+            queryParams: { id: reservation._id }
           });
         }
         else {
@@ -290,6 +292,7 @@ export class BookingComponent implements OnInit{
         }
       },
       error: err => {
+        this.loading = false;
         console.error('Errore creazione prenotazione:', err);
         this.notification.errorMessage('Si è verificato un errore durante la prenotazione. Riprova più tardi.', 5000);
       }
