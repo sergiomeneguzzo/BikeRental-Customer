@@ -8,11 +8,9 @@
         <a routerLink="/login" class="nav-link">Accedi</a>
       </li>
       <li class="nav-item" *ngIf="auth.isLoggedIn()">
-        <!-- pulsante che apre il popover -->
         <p-button type="button" [label]="'Account'" (onClick)="op.toggle($event)"
           styleClass="account nav-link p-button-text">
         </p-button>
-        <!-- popover con le due azioni -->
         <p-popover #op>
           <div class="flex flex-col gap-2 min-w-32">
             <button pButton type="button" label="Profilo" class="p-button-text w-full text-left"

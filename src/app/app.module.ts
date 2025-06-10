@@ -14,11 +14,11 @@ import { ThemeBlack } from './theme';
 import { providePrimeNG } from 'primeng/config';
 import { BookingComponent } from './pages/booking/booking.component';
 import { DropdownModule } from 'primeng/dropdown';
-import { Calendar, CalendarModule } from 'primeng/calendar';
-import { Checkbox, CheckboxModule } from 'primeng/checkbox';
-import { ButtonDirective, ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
-import { Steps, StepsModule } from 'primeng/steps';
+import { StepsModule } from 'primeng/steps';
 import { MessageService } from 'primeng/api';
 import { RouterModule } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
@@ -26,15 +26,17 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 import { CardModule } from 'primeng/card';
+import { PopoverModule } from 'primeng/popover';
 import { HomeComponent } from './pages/home/home.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import {MultiSelect} from 'primeng/multiselect';
-import {Image} from 'primeng/image';
+import { MultiSelect } from 'primeng/multiselect';
+import { Image } from 'primeng/image';
 import { BookingConfirmedComponent } from './pages/booking/booking-confirmed/booking-confirmed.component';
 import { CheckEmailComponent } from './pages/auth/check-email/check-email.component';
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 import { UserComponent } from './pages/user/user.component';
+import { BackgroundComponent } from './shared/background/background.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { UserComponent } from './pages/user/user.component';
     CheckEmailComponent,
     EmailConfirmedComponent,
     UserComponent,
+    BackgroundComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,6 +69,7 @@ import { UserComponent } from './pages/user/user.component';
     ButtonModule,
     ProgressSpinnerModule,
     MessageModule,
+    PopoverModule,
 
     DropdownModule,
     CalendarModule,
