@@ -25,3 +25,34 @@
   list-style: none;
   padding: 0;
 }
+
+.none {
+  display: none;
+}
+
+
+@media only screen and (min-width: 0px) and (max-width: 750px) {
+  .navbar {
+    display: none
+  }
+
+  .navbar-mo {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.5rem 1rem .25rem;
+  }
+
+  .open-menu-mo {
+    font-weight: 500;
+    opacity: 0.7;
+  }
+
+  .button-navbar-mo {
+    display: flex;
+    gap: 4vw;
+  }
+
+  .button-navbar-mo a.pi-user {
+    padding-top: 3px;
+  }
+}

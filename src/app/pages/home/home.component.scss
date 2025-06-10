@@ -95,3 +95,54 @@ a.button-sec-2 {
   line-height: 1.25;
   letter-spacing: .02em;
 }
+
+
+@media only screen and (min-width: 0px) and (max-width: 1024px) {
+  .hero-top {
+    display: flex;
+    padding: 8rem 0.65rem 2rem;
+    width: 100%;
+    gap: 1.5rem;
+  }
+
+  .hero-top .col-2 {
+    display: none;
+  }
+
+  .hero-top h1 {
+    font-size: 19.5vw;
+    font-weight: 500;
+  }
+
+  div.label-img-sec-2 .caps {
+    font-size: 3.5vw;
+    font-weight: 500;
+  }
+
+  .wrapper-text-sec-2 {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .wrapper-text-sec-2 p.text-sec-2 {
+    font-size: 4vw;
+  }
+
+  .wrapper-text-sec-2 a.button-sec-2 {
+    padding: 2vw 2.5vw;
+    border-radius: 10vw;
+  }
+
+  .wrapper-text-sec-2 span.text-button-sec-2 {
+    font-size: 4vw;
+  }
+
+  .content-sec-2 {
+    padding: 4.1666666667vw 8vw;
+  }
+
+  .content-sec-2 h2.heading-sec-2 {
+    font-size: 6vw;
+    font-weight: 300;
+  }
+}
