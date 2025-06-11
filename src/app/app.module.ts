@@ -37,11 +37,10 @@ import { CheckEmailComponent } from './pages/auth/check-email/check-email.compon
 import { EmailConfirmedComponent } from './pages/auth/email-confirmed/email-confirmed.component';
 import { UserComponent } from './pages/user/user.component';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
-import {BackgroundComponent} from './shared/background/background.component';
 import { EditBookingComponent } from './pages/booking/edit-booking/edit-booking.component';
-import {InputNumber} from "primeng/inputnumber";
-import {DatePicker} from 'primeng/datepicker';
-import {Tooltip} from 'primeng/tooltip';
+import { InputNumber } from "primeng/inputnumber";
+import { DatePicker } from 'primeng/datepicker';
+import { Tooltip } from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -58,7 +57,6 @@ import {Tooltip} from 'primeng/tooltip';
     EmailConfirmedComponent,
     UserComponent,
     ConfirmationModalComponent,
-    BackgroundComponent,
     EditBookingComponent,
   ],
   imports: [
