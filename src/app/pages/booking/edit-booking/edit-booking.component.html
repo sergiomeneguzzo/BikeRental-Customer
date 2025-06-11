@@ -6,7 +6,8 @@
   <div *ngIf="!isLoading">
     <h2>Modifica Prenotazione</h2>
     <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
-      <div class="form-group">
+      <div class="form-group date-row">
+      <div class="date-picker-group">
         <label for="pickupDate">Data Ritiro:</label>
         <p-datePicker
           id="pickupDate"
@@ -18,6 +19,7 @@
           hourFormat="24"
           dateFormat="dd/mm/yy"
           [showIcon]="true"
+          [disabled]="true"  pTooltip="Per modificare le date della prenotazione, annullare la prenotazione esistente e crearne una nuova."
           [disabledDates]="invalidDates"
           [readonlyInput]="true"
         ></p-datePicker>
@@ -38,6 +40,7 @@
           hourFormat="24"
           dateFormat="dd/mm/yy"
           [showIcon]="true"
+          [disabled]="true"  pTooltip="Per modificare le date della prenotazione, annullare la prenotazione esistente e crearne una nuova."
           [disabledDates]="invalidDates"
           [readonlyInput]="true"
         ></p-datePicker>
@@ -45,9 +48,15 @@
           Data consegna obbligatoria.
         </div>
       </div>
+      </div>
 
       <div class="form-group">
         <label for="pickupLocation">Luogo Ritiro:</label>
+        <span
+          pTooltip="Per modificare le date della prenotazione, annullare la prenotazione esistente e crearne una nuova."
+          tooltipPosition="top"
+          class="block w-full"
+        >
         <p-dropdown
           id="pickupLocation"
           formControlName="pickupLocation"
@@ -55,7 +64,9 @@
           optionLabel="name"
           placeholder="Seleziona luogo di ritiro"
           [filter]="true"
+          [disabled]="true"
         ></p-dropdown>
+        </span>
         <div *ngIf="bookingForm.get('pickupLocation')?.invalid && (bookingForm.get('pickupLocation')?.dirty || bookingForm.get('pickupLocation')?.touched)" class="error-message">
           Luogo ritiro obbligatorio.
         </div>
@@ -74,6 +85,9 @@
         <div *ngIf="bookingForm.get('dropoffLocation')?.invalid && (bookingForm.get('dropoffLocation')?.dirty || bookingForm.get('dropoffLocation')?.touched)" class="error-message">
           Luogo consegna obbligatorio.
         </div>
+        <div class="extra-fee-row" *ngIf="bookingForm.get('pickupLocation')?.value?._id && bookingForm.get('dropoffLocation')?.value?._id && bookingForm.get('pickupLocation')?.value?._id !== bookingForm.get('dropoffLocation')?.value?._id">
+          <span class="extra-fee-label">+10€</span>
+        </div>
       </div>
 
       <div class="form-group">
@@ -90,7 +104,7 @@
         >
           <ng-template let-bike pTemplate="item">
             <div>
-              <img [src]="bike.picture" alt="Bike Image" style="width: 50px; height: 50px; object-fit: cover; margin-right: 10px;">
+              <img [src]="bike.picture" alt="Bike Image" style="width: 90px; height: 60px; object-fit: cover; margin-right: 10px;">
               {{ bike.serialNumber }} ({{ bike.sizes?.[0]?.sizeLabel }}) -
               {{ (bike.bikeType)?.PriceHalfDay | currency:'EUR':'symbol':'1.2-2' }}/mezza giornata
             </div>
@@ -135,7 +149,7 @@
         >
           <ng-template let-insurance pTemplate="item">
             <div>
-              {{ insurance.name }} - {{ insurance.price | currency:'EUR':'symbol':'1.2-2' }}/giorno
+              {{ insurance.name }} - {{ insurance.price | currency:'EUR':'symbol':'1.2-2' }}
             </div>
           </ng-template>
         </p-multiSelect>

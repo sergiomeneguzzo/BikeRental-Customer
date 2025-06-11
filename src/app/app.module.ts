@@ -41,6 +41,7 @@ import {BackgroundComponent} from './shared/background/background.component';
 import { EditBookingComponent } from './pages/booking/edit-booking/edit-booking.component';
 import {InputNumber} from "primeng/inputnumber";
 import {DatePicker} from 'primeng/datepicker';
+import {Tooltip} from 'primeng/tooltip';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,8 @@ import {DatePicker} from 'primeng/datepicker';
     MultiSelect,
     Image,
     InputNumber,
-    DatePicker
+    DatePicker,
+    Tooltip
   ],
   providers: [
     provideAnimationsAsync(),

@@ -48,7 +48,7 @@ export class EditBookingComponent implements OnInit, OnDestroy{
     this.bookingId = this.route.snapshot.paramMap.get('id')!;
     if (!this.bookingId) {
       this.notify.errorMessage('ID prenotazione non fornito.');
-      this.router.navigate(['/profile']);
+      this.router.navigate(['/account']);
       return;
     }
 
@@ -63,9 +63,9 @@ export class EditBookingComponent implements OnInit, OnDestroy{
 
   private initForm(): void {
     this.bookingForm = this.fb.group({
-      pickupDate: [null, Validators.required],
-      pickupLocation: [null, Validators.required],
-      dropoffDate: [null, Validators.required],
+      pickupDate: [{ value: null, disabled: true }, Validators.required],
+      pickupLocation: [{ value: null, disabled: true }, Validators.required],
+      dropoffDate: [{ value: null, disabled: true }, Validators.required],
       dropoffLocation: [null, Validators.required],
       items: [[], Validators.required],
       accessories: [[]],
@@ -73,11 +73,7 @@ export class EditBookingComponent implements OnInit, OnDestroy{
       totalPrice: [{ value: 0, disabled: true }],
     });
 
-    this.bookingForm.get('pickupDate')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.onDateOrLocationChange());
-    this.bookingForm.get('dropoffDate')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.onDateOrLocationChange());
-    this.bookingForm.get('pickupLocation')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.onDateOrLocationChange());
-    this.bookingForm.get('dropoffLocation')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.onDateOrLocationChange());
-
+    this.bookingForm.get('dropoffLocation')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.calculateTotalPrice());
     this.bookingForm.get('items')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.calculateTotalPrice());
     this.bookingForm.get('accessories')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.calculateTotalPrice());
     this.bookingForm.get('insurances')?.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe(() => this.calculateTotalPrice());
@@ -120,8 +116,10 @@ export class EditBookingComponent implements OnInit, OnDestroy{
             : this.originalBooking.insurances,
         });
 
-        const currentBikeIds = (this.originalBooking.items as Bike[]).map(b => b._id || b);
-        this.bookingForm.get('items')?.setValue(currentBikeIds);
+        const currentBikeIds = (this.originalBooking.items as Bike[])
+          .map(b => (b as any)._id as string)
+          .filter(id => !!id);
+        this.bookingForm.get('items')!.setValue(currentBikeIds);
 
         this.onDateOrLocationChange();
         return of(true);
@@ -144,7 +142,6 @@ export class EditBookingComponent implements OnInit, OnDestroy{
     const pickupDate = this.bookingForm.get('pickupDate')?.value;
     const dropoffDate = this.bookingForm.get('dropoffDate')?.value;
     const pickupLocation = this.bookingForm.get('pickupLocation')?.value;
-
     if (pickupDate && dropoffDate && pickupLocation && pickupLocation._id) {
       this.loadAvailableBikes().subscribe();
       this.getDisabledDatesForLocation(pickupLocation._id);
@@ -169,7 +166,6 @@ export class EditBookingComponent implements OnInit, OnDestroy{
       .pipe(
         map(bikes => {
           const receivedBikes: Bike[] = bikes as Bike[];
-
           const originalBikeIds = Array.isArray(this.originalBooking.items)
             ? (this.originalBooking.items as Bike[]).map(b => b._id || b)
             : [];
@@ -183,7 +179,9 @@ export class EditBookingComponent implements OnInit, OnDestroy{
               }
             }
           });
-          this.availableBikes = combinedBikes;
+          this.availableBikes = combinedBikes.filter((bike, idx, arr) =>
+            idx === arr.findIndex(b => b._id === bike._id)
+          );
           const currentSelected = this.bookingForm.get('items')?.value as string[];
           const filteredSelected = currentSelected.filter(id => combinedBikes.some(b => b._id === id));
           this.bookingForm.get('items')?.setValue(filteredSelected);
@@ -255,7 +253,7 @@ export class EditBookingComponent implements OnInit, OnDestroy{
     }
 
     const diffMs = dropoffDate.getTime() - pickupDate.getTime();
-    let rentalHalfDays = Math.ceil(diffMs / (1000 * 60 * 60 * 12));
+    let rentalHalfDays = Math.ceil(diffMs / (1000 * 60 * 60 * 4));
     if (rentalHalfDays === 0 && diffMs > 0) {
       rentalHalfDays = 1;
     } else if (diffMs <= 0) {
@@ -326,7 +324,7 @@ export class EditBookingComponent implements OnInit, OnDestroy{
       next: (updatedBooking) => {
         if (updatedBooking) {
           this.notify.successMessage('Prenotazione aggiornata con successo!');
-          this.router.navigate(['/profile']);
+          this.router.navigate(['/account']);
         }
         this.isLoading = false;
       }

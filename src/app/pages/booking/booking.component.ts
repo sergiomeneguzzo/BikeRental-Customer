@@ -110,7 +110,7 @@ export class BookingComponent implements OnInit{
     }
     const msDiff = doff.getTime() - pu.getTime();
     const hours = msDiff / (1000 * 60 * 60);
-    return hours > 0 ? Math.ceil(hours / 12) : 0;
+    return hours > 0 ? Math.ceil(hours / 4) : 0;
   }
 
   getTotalPrice(bike: Bike): number {
