@@ -34,6 +34,12 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
+.no-scroll {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
 .p-password-input {
   width: 26rem;
   border: 1px solid #ccc;

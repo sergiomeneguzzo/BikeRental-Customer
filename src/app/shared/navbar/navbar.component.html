@@ -4,14 +4,14 @@
       <img src="/logo.webp" alt="Raido logo" class="logo-img" />
     </a>
     <ul class="nav-list">
-      <li class="nav-item"><a routerLink="/about" class="nav-link"> Chi Siamo</a></li>
+      <li class="nav-item"><a routerLink="/about" class="nav-link">Chi Siamo</a></li>
       <li class="nav-item"><a routerLink="/booking" class="nav-link">Prenota</a></li>
       <li class="nav-item" *ngIf="!auth.isLoggedIn()">
         <a routerLink="/login" class="nav-link">Accedi</a>
       </li>
       <li class="nav-item" *ngIf="auth.isLoggedIn()">
         <div class="user-menu-wrapper" (click)="toggleMenu()">
-          <li class="nav-link">Account</li>
+          <span class="nav-link">Account</span>
           <div class="user-dropdown" *ngIf="menuOpen">
             <button class="user-dropdown-item" (click)="goToProfile()">Profilo</button>
             <button class="user-dropdown-item" (click)="auth.logout()">Logout</button>
@@ -20,17 +20,25 @@
       </li>
     </ul>
   </div>
-  <!-- Mobile -->
-  <div class="none navbar-mo">
-    <a href="/" class="nav-brand">Raido</a>
-    <button class="button-navbar-mo">
-      <a [routerLink]="auth.isLoggedIn() ? '/account' : '/login'" class="pi pi-user">
-      </a>
-      <span class="open-menu-mo">Menu</span>
-      <span class="none close-menu-mo">Close</span>
+  <div class="navbar-mo">
+    <a routerLink="/" class="nav-brand">
+      <img src="/logo.webp" alt="Raido logo" class="logo-img" />
+    </a>
+    <button class="button-navbar-mo" (click)="toggleMobileMenu()">
+      <div class="hamburger" [class.is-active]="mobileMenuOpen">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+      </div>
     </button>
   </div>
 </nav>
-<div class="menu-mo">
-  <!-- Crea menu come da immagine. Quando premo su button "Menu", si apre il "menu-mo" -->
+
+<div class="menu-mo" #menuMo>
+  <ul>
+    <li><a routerLink="/about" (click)="toggleMobileMenu()">Chi Siamo</a></li>
+    <li><a routerLink="/booking" (click)="toggleMobileMenu()">Prenota</a></li>
+    <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" (click)="toggleMobileMenu()">Accedi</a></li>
+    <li *ngIf="auth.isLoggedIn()"><a routerLink="/account" (click)="toggleMobileMenu()">Account</a></li>
+  </ul>
 </div>
