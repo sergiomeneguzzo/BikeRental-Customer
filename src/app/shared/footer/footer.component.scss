@@ -1,35 +1,92 @@
 .container-footer {
-  padding: 4.1666666667vw 12.5vw 3.3333333333vw;
+  padding: 4.1667vw 12.5vw 3.3333vw;
 }
 
 footer {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   gap: 2.3em;
+}
+
+.footer-logo {
+  height: auto;
+  width: 45px;
+  margin-bottom: 1em;
+}
+
+@media only screen and (max-width: 768px) {
+  .footer-logo {
+    width: 50px;
+  }
 }
 
 .links-top-footer,
 .links-bottom-footer {
   display: flex;
-  gap: 1.875rem;
-  ;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem 1.5rem;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.links-top-footer li,
+.links-bottom-footer li {
+  list-style: none;
 }
 
 .links-top-footer a,
 .links-bottom-footer a {
-  font-size: 0.85rem;
+  font-size: 0.75rem;
   font-weight: 400;
   color: #000;
+  text-decoration: none;
 }
 
 .links-bottom-footer a {
   opacity: 0.5;
 }
 
-@media only screen and (min-width: 0px) and (max-width: 750px) {
-  footer {
-    display: none;
+.operator-link {
+  opacity: 0.3;
+  font-size: 0.7rem;
+  transition: opacity 0.3s ease;
+}
+
+.operator-link:hover {
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
+/* 🔽 Solo per mobile layout "a piramide" */
+@media only screen and (max-width: 750px) {
+  .container-footer {
+    padding: 6vw 5vw;
+  }
+
+  .footer-logo {
+    width: 50px;
+    margin-bottom: 0.8em;
+  }
+
+  .links-top-footer,
+  .links-bottom-footer {
+    max-width: 300px;
+  }
+
+  .links-top-footer a,
+  .links-bottom-footer a {
+    font-size: 0.7rem;
+  }
+
+  .operator-link {
+    font-size: 0.65rem;
+  }
+
+  .mobile-full {
+    flex-basis: 100%;
+    text-align: center;
   }
 }
