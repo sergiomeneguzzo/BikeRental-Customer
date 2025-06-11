@@ -27,9 +27,13 @@
   <div class="none navbar-mo">
     <a href="/" class="nav-brand">Raido</a>
     <button class="button-navbar-mo">
-      <a class="pi pi-user"></a>
+      <a [routerLink]="auth.isLoggedIn() ? '/account' : '/login'" class="pi pi-user">
+      </a>
       <span class="open-menu-mo">Menu</span>
       <span class="none close-menu-mo">Close</span>
     </button>
   </div>
 </nav>
+<div class="menu-mo">
+  <!-- Crea menu come da immagine. Quando premo su button "Menu", si apre il "menu-mo" -->
+</div>
