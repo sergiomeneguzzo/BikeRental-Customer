@@ -8,6 +8,8 @@ export interface Location {
     province: string;
   };
   isActive: boolean;
+  latitude: number;
+  longitude: number;
   createdAt: Date;
   updatedAt: Date;
 }

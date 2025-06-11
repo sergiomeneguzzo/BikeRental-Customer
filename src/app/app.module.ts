@@ -69,7 +69,6 @@ import {Tooltip} from 'primeng/tooltip';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-
     CardModule,
     InputTextModule,
     PasswordModule,
@@ -77,7 +76,6 @@ import {Tooltip} from 'primeng/tooltip';
     ProgressSpinnerModule,
     MessageModule,
     PopoverModule,
-
     DropdownModule,
     CalendarModule,
     CheckboxModule,
