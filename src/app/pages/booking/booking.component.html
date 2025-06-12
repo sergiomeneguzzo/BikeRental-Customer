@@ -145,19 +145,19 @@
 
             <p *ngIf="bike.notes"><strong>Note:</strong> {{ bike.notes }}</p>
             <button
-              *ngIf="bookingForm.value.bikeId !== bike.id"
+              *ngIf="!selectedBikeIds.includes(bike.id!)"
               type="button"
               class="icon-button left small"
-              (click)="selectBike(bike.id!)">
+              (click)="addBike(bike.id!)">
               <i class="pi pi-plus icon"></i>
               Aggiungi
             </button>
 
-            <div *ngIf="bookingForm.value.bikeId === bike.id" class="selected-actions left">
+            <div *ngIf="selectedBikeIds.includes(bike.id!)" class="selected-actions left">
               <button type="button" class="icon-button small selected animate" aria-label="Selezionata">
                 <i class="pi pi-check"></i>
               </button>
-              <button type="button" class="icon-button small danger" (click)="deselectBike()" aria-label="Rimuovi bici">
+              <button type="button" class="icon-button small danger" (click)="removeBike(bike.id!)" aria-label="Rimuovi bici">
                 <i class="pi pi-trash"></i>
               </button>
             </div>
@@ -220,7 +220,7 @@
             <input
               type="radio"
               name="paymentMethod"
-              value="onPickup"
+              value="Paga al ritiro"
               formControlName="paymentMethod"
             />
             <div class="option-content">
@@ -234,7 +234,7 @@
             <input
               type="radio"
               name="paymentMethod"
-              value="paypal"
+              value="Paypal"
               formControlName="paymentMethod"
             />
             <div class="option-content">
@@ -248,7 +248,7 @@
             <input
               type="radio"
               name="paymentMethod"
-              value="card"
+              value="Carte"
               formControlName="paymentMethod"
             />
             <div class="option-content">

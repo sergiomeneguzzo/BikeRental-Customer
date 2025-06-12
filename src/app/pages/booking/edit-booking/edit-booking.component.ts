@@ -166,10 +166,16 @@ export class EditBookingComponent implements OnInit, OnDestroy{
       .pipe(
         map(bikes => {
           const receivedBikes: Bike[] = bikes as Bike[];
+
+          const normalizedBikes: Bike[] = receivedBikes.map(b => ({
+            ...b,
+            _id: b._id || (b as any).id
+          }));
+
           const originalBikeIds = Array.isArray(this.originalBooking.items)
             ? (this.originalBooking.items as Bike[]).map(b => b._id || b)
             : [];
-          const combinedBikes: Bike[] = [...receivedBikes];
+          const combinedBikes: Bike[] = [...normalizedBikes];
 
           originalBikeIds.forEach(originalId => {
             if (!combinedBikes.some(b => b._id === originalId)) {
@@ -267,27 +273,34 @@ export class EditBookingComponent implements OnInit, OnDestroy{
         total += (bike.bikeType as BikeType).PriceHalfDay * rentalHalfDays;
       }
     });
-
     selectedAccessoryIds.forEach(accId => {
       const accessory = this.accessories.find(a => a._id === accId);
       if (accessory && accessory.price !== undefined) {
         total += accessory.price;
       }
     });
-
     selectedInsuranceIds.forEach(insId => {
       const insurance = this.insurances.find(i => i._id === insId);
       if (insurance && insurance.price !== undefined) {
-        total += (insurance.price / 2) * rentalHalfDays;
+        total += insurance.price;
       }
     });
 
-    let extraLocationFee = 0;
-    if (pickupLocation && dropoffLocation && pickupLocation._id !== dropoffLocation._id) {
-      extraLocationFee = 10;
-    }
-    total += extraLocationFee;
+    const originalPickupLocationId = this.originalBooking?.pickupLocation?._id || this.originalBooking?.pickupLocation;
+    const originalDropoffLocationId = this.originalBooking?.dropoffLocation?._id || this.originalBooking?.dropoffLocation;
+    const currentPickupLocationId = pickupLocation?._id;
+    const currentDropoffLocationId = dropoffLocation?._id;
 
+    const originalHadExtraFee = originalPickupLocationId !== originalDropoffLocationId;
+
+    const currentNeedsExtraFee = currentPickupLocationId && currentDropoffLocationId &&
+      currentPickupLocationId !== currentDropoffLocationId;
+
+    if (originalHadExtraFee && !currentNeedsExtraFee) {
+      total -= 10;
+    } else if (!originalHadExtraFee && currentNeedsExtraFee) {
+      total += 10;
+    }
     this.bookingForm.get('totalPrice')?.setValue(total);
   }
 

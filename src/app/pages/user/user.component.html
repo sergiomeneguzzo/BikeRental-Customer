@@ -13,9 +13,10 @@
           class="profile-image"
         />
       </div>
-      <p><strong>Nome:</strong> {{ currentUser.firstName }}</p>
-      <p><strong>Cognome:</strong> {{ currentUser.lastName }}</p>
-      <p><strong>Email:</strong> {{ currentUser.username }}</p>
+      <p class="user-full-name">
+        <strong>{{ currentUser.firstName }} {{ currentUser.lastName }}</strong>
+      </p>
+      <p class="user-email">{{ currentUser.username }}</p>
     </div>
     <h2>Le tue Prenotazioni</h2>
 

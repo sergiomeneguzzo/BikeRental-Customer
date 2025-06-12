@@ -34,6 +34,8 @@ export class BookingComponent implements OnInit{
   ];
   activeIndex = 0;
   pickupDate: Date | null = null;
+  selectedBikeIds: string[] = [];
+  selectedBikes: Bike[] = [];
 
   locations: Location[] = [];
   bikeTypes: BikeType[] = [];
@@ -64,7 +66,7 @@ export class BookingComponent implements OnInit{
       extraLocationFee: [false],
       // STEP 2
       bikeType: [null, Validators.required],
-      bikeId: [null, Validators.required],
+      bikeIds: [ [] as string[], Validators.required ],
       //STEP 3
       insuranceId: [null, Validators.required],
       accessories: [ [] ],
@@ -122,7 +124,7 @@ export class BookingComponent implements OnInit{
   }
 
   selectBikeType(typeId: string): void {
-    this.bookingForm.patchValue({ bikeType: typeId, bikeId: null });
+    this.bookingForm.patchValue({ bikeType: typeId });
     const locId = this.bookingForm.value.pickupLocation;
     const pu    = this.bookingForm.value.pickupDate;
     const doff  = this.bookingForm.value.dropoffDate;
@@ -138,6 +140,21 @@ export class BookingComponent implements OnInit{
           return bt === typeId;
         });
       });
+  }
+
+  addBike(bikeId: string) {
+    const bike = this.filteredBikes.find(b => b.id === bikeId);
+    if (bike && !this.selectedBikeIds.includes(bikeId)) {
+      this.selectedBikeIds.push(bikeId);
+      this.selectedBikes.push(bike);
+      this.bookingForm.patchValue({ bikeIds: this.selectedBikeIds });
+    }
+  }
+
+  removeBike(bikeId: string) {
+    this.selectedBikeIds = this.selectedBikeIds.filter(id => id !== bikeId);
+    this.selectedBikes  = this.selectedBikes.filter(b => b.id !== bikeId);
+    this.bookingForm.patchValue({ bikeIds: this.selectedBikeIds });
   }
 
   next() {
@@ -165,7 +182,8 @@ export class BookingComponent implements OnInit{
     }
     if (index === 1) {
       return this.bookingForm.get('bikeType')!.valid
-        && this.bookingForm.get('bikeId')!.valid;
+        && this.bookingForm.get('bikeIds')!.valid
+        && this.selectedBikeIds.length > 0;
     }
     if (index === 2) {
       return this.bookingForm.get('insuranceId')!.valid
@@ -174,21 +192,13 @@ export class BookingComponent implements OnInit{
     return true;
   }
 
-  selectBike(bikeId: string) {
-    this.bookingForm.patchValue({ bikeId });
-  }
-
-  deselectBike() {
-    this.bookingForm.patchValue({ bikeId: null });
-  }
-
   getTotalPriceByInsuranceAndAccessories(): number {
     let total = 0;
 
-    const bike = this.filteredBikes.find(b => b.id === this.bookingForm.value.bikeId);
-    if (bike) {
+    this.selectedBikes.forEach(bike => {
       total += this.getTotalPrice(bike);
-    }
+    });
+
     const insId = this.bookingForm.value.insuranceId;
     const ins = this.insurances.find(i => i._id === insId);
     if (ins) {
@@ -268,7 +278,7 @@ export class BookingComponent implements OnInit{
       pickupLocation: fv.pickupLocation,
       dropoffDate: fv.dropoffDate,
       dropoffLocation: fv.dropoffLocation,
-      items: [fv.bikeId],
+      items: fv.bikeIds,
       accessories: fv.accessories,
       insurances: [fv.insuranceId],
       extraLocationFee: extraFee,
@@ -281,13 +291,14 @@ export class BookingComponent implements OnInit{
     this.bookingSrv.createReservation(payload).subscribe({
       next: reservation => {
         this.loading = false;
-        this.notification.successMessage('Prenotazione richiesta con successo!', 3000);
         if (localStorage.getItem('authToken')) {
+          this.notification.successMessage('Prenotazione richiesta con successo!', 3000);
           this.router.navigate(['/booking-confirmed'], {
             queryParams: { id: reservation._id }
           });
         }
         else {
+          this.notification.warningMessage('Crea un account per confermare la prenotazione!', 3000);
           this.router.navigate(['/register']);
         }
       },

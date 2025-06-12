@@ -16,7 +16,7 @@
   border-radius: 50%;
   overflow: hidden;
   position: absolute;
-  top: -50px;
+  top: -65px;
   left: 50%;
   transform: translateX(-50%);
   border: 3px solid white;
@@ -30,7 +30,7 @@
 }
 
 .user-info-card > p {
-  margin-top: 30px;
+  margin-top: 25px;
   margin-bottom: 0.5rem;
   font-size: 1rem;
   color: #555;
@@ -45,6 +45,21 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+.user-full-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 1rem 0 0.2rem 0;
+}
+
+.user-email {
+  font-size: 1rem;
+  color: #555;
+  text-align: center;
+  margin: 0;
 }
 
 .booking-card {

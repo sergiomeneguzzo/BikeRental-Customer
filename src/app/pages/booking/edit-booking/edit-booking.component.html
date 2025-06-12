@@ -9,6 +9,11 @@
       <div class="form-group date-row">
       <div class="date-picker-group">
         <label for="pickupDate">Data Ritiro:</label>
+        <span
+          pTooltip="Per modificare le date della prenotazione, annullare la prenotazione esistente e crearne una nuova."
+          tooltipPosition="top"
+          class="block w-full"
+        >
         <p-datePicker
           id="pickupDate"
           formControlName="pickupDate"
@@ -19,10 +24,11 @@
           hourFormat="24"
           dateFormat="dd/mm/yy"
           [showIcon]="true"
-          [disabled]="true"  pTooltip="Per modificare le date della prenotazione, annullare la prenotazione esistente e crearne una nuova."
+          [disabled]="true"
           [disabledDates]="invalidDates"
           [readonlyInput]="true"
         ></p-datePicker>
+        </span>
         <div *ngIf="bookingForm.get('pickupDate')?.invalid && (bookingForm.get('pickupDate')?.dirty || bookingForm.get('pickupDate')?.touched)" class="error-message">
           Data ritiro obbligatoria.
         </div>
@@ -98,6 +104,7 @@
           [options]="availableBikes"
           optionLabel="serialNumber"
           optionValue="_id"
+          dataKey="_id"
           display="chip"
           placeholder="Seleziona le bici"
           [filter]="true"
