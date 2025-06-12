@@ -58,9 +58,12 @@
           id="pickupDate"
           formControlName="pickupDate"
           [showTime]="true"
+          [minDate]="today"
           [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          [showIcon]="true"
+          [readonlyInput]="true"
           (onSelect)="onDateSelect($event, 'pickup')"
           (onInput)="onDateInput($event, 'pickup')"
           placeholder="Seleziona data"
@@ -77,6 +80,8 @@
           [appendTo]="'body'"
           dateFormat="yy-mm-dd"
           hourFormat="24"
+          [showIcon]="true"
+          [readonlyInput]="true"
           (onSelect)="onDateSelect($event, 'dropoff')"
           (onInput)="onDateInput($event, 'dropoff')"
           placeholder="Seleziona data"
@@ -102,6 +107,10 @@
             €{{ bt.PriceHalfDay }} / mezza giornata
           </div>
         </label>
+      </div>
+
+      <div class="selected-bikes-info">
+        <p><strong>Bici selezionate:</strong> {{ selectedBikes.length }}</p>
       </div>
 
       <div class="bike-cards">

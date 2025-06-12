@@ -27,6 +27,17 @@
   }
 }
 
+.selected-bikes-info {
+  margin: 1rem 0;
+  text-align: right;
+  font-size: 0.8rem;
+  color: #333;
+
+  p {
+    margin: 0;
+  }
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

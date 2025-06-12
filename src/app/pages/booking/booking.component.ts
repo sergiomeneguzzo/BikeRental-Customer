@@ -42,6 +42,7 @@ export class BookingComponent implements OnInit{
   filteredBikes: Bike[] = [];
   insurances: Insurance[] = [];
   accessories: Accessory[] = [];
+  today: Date = new Date();
 
   bookingForm: FormGroup;
 
@@ -75,6 +76,7 @@ export class BookingComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.today.setHours(0, 0, 0, 0);
     forkJoin({
       locs: this.bookingSrv.getLocations(),
       types: this.bookingSrv.getBikeTypes(),
@@ -97,10 +99,16 @@ export class BookingComponent implements OnInit{
       });
     this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
       this.pickupDate = value;
+      this.resetBikeSelection();
+    });
+    this.bookingForm.get('dropoffDate')?.valueChanges.subscribe((value: Date) => {
+      this.resetBikeSelection();
     });
     this.bookingForm.get('pickupLocation')?.valueChanges.subscribe(() => {
+      this.resetBikeSelection();
     });
     this.bookingForm.get('dropoffLocation')?.valueChanges.subscribe(() => {
+      this.resetBikeSelection();
     });
   }
 
@@ -121,6 +129,16 @@ export class BookingComponent implements OnInit{
     }
     const priceHalf = (bike.bikeType as BikeType).PriceHalfDay;
     return priceHalf * this.halfDays;
+  }
+
+  resetBikeSelection(): void {
+    this.bookingForm.patchValue({
+      bikeType: null,
+      bikeIds: []
+    });
+    this.selectedBikeIds = [];
+    this.selectedBikes = [];
+    this.filteredBikes = [];
   }
 
   selectBikeType(typeId: string): void {
