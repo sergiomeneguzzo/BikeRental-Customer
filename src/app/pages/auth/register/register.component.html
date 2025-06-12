@@ -61,8 +61,8 @@
             <small *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched" class="p-error">
               La password è obbligatoria
             </small>
-            <small *ngIf="registerForm.get('password')?.hasError('strongPassword') && registerForm.get('password')?.touched" class="p-error">
-              La password deve contenere almeno 8 caratteri, una maiuscola, una minuscola e un numero
+            <small *ngIf="registerForm.get('password')?.hasError('weakPassword') && registerForm.get('password')?.touched" class="p-error">
+              La password deve contenere almeno un carattere speciale
             </small>
           </div>
 
