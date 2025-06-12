@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               switchMap(resvs => {
                 if (resvs.length > 0) {
                   return forkJoin(
-                    resvs.map(r => this.bookingSrv.confirmReservation(r))
+                    resvs.map(r => this.bookingSrv.confirmReservation(r._id!))
                   );
                 } else {
                   return of(user);

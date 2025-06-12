@@ -35,8 +35,11 @@ export class BookingService {
     return this.http.post<Booking>(`${apiUrl}/bookings`, reservation);
   }
 
-  confirmReservation(reservation: Booking): Observable<Booking> {
-    return this.http.post<Booking>(`${apiUrl}/bookings/confirm`, reservation);
+  confirmReservation(reservationId: string): Observable<Booking> {
+    return this.http.post<Booking>(
+      `${apiUrl}/bookings/confirm`,
+      { reservationId }
+    );
   }
 
   getUserReservation(): Observable<Booking[]> {
