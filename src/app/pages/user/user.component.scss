@@ -274,16 +274,15 @@
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: auto; /* Spinge la sezione azioni in basso */
+  margin-top: auto;
   padding-top: 1rem;
   border-top: 1px dashed #eee;
-  align-items: center; /* Allinea verticalmente i bottoni e il messaggio */
+  align-items: center;
 }
 
 .alert-message {
   color: #d33;
-  font-size: 0.9em;
-  font-style: italic;
+  font-size: 0.8em;
   text-align: right;
   flex-grow: 1;
   padding-right: 1rem;
