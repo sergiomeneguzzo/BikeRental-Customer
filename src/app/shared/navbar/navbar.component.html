@@ -39,6 +39,13 @@
     <li><a routerLink="/about" (click)="toggleMobileMenu()">Chi Siamo</a></li>
     <li><a routerLink="/booking" (click)="toggleMobileMenu()">Prenota</a></li>
     <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" (click)="toggleMobileMenu()">Accedi</a></li>
-    <li *ngIf="auth.isLoggedIn()"><a routerLink="/account" (click)="toggleMobileMenu()">Account</a></li>
+    <li *ngIf="auth.isLoggedIn()">
+      <a routerLink="/account" (click)="toggleMobileMenu()">Account</a>
+    </li>
+    <li *ngIf="auth.isLoggedIn()">
+      <button class="user-menu-logout" (click)="auth.logout(); toggleMobileMenu()">
+        Logout
+      </button>
+    </li>
   </ul>
 </div>

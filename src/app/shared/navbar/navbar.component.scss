@@ -121,6 +121,19 @@
   z-index: 99;
 }
 
+.user-menu-logout {
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: #ddd;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s;
+}
+
 .menu-mo ul {
   list-style: none;
   padding: 0;
