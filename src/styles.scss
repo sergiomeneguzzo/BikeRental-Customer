@@ -51,6 +51,17 @@ body {
   }
 }
 
+@media screen and (max-width: 728px) {
+  .p-datepicker-panel {
+    left: 0 !important;
+    width: 370px !important;
+  }
+
+  .p-datepicker-day {
+    width: auto !important;
+  }
+}
+
 .navbar .p-button-label,
 p-popover.p-button-text {
   font-weight: 400 !important;
