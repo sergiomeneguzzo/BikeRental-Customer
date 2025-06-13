@@ -53,39 +53,46 @@
       </div>
 
       <div class="form-field">
-        <label for="pickupDate">Data e ora ritiro</label>
-        <p-datePicker
-          id="pickupDate"
-          formControlName="pickupDate"
-          [showTime]="true"
-          [minDate]="today"
-          [appendTo]="'body'"
-          dateFormat="yy-mm-dd"
-          hourFormat="24"
-          [showIcon]="true"
-          [readonlyInput]="true"
-          (onSelect)="onDateSelect($event, 'pickup')"
-          (onInput)="onDateInput($event, 'pickup')"
-          placeholder="Seleziona data"
-        ></p-datePicker>
+        <label for="pickupDate">Data ritiro</label>
+        <p-datePicker id="pickupDate"
+                      formControlName="pickupDate"
+                      [minDate]="tomorrow"
+                      dateFormat="yy-mm-dd"
+                      [showIcon]="true"
+                      [readonlyInput]="true"
+                      placeholder="Seleziona data"></p-datePicker>
+      </div>
+      <div class="form-field">
+        <label for="pickupTime">Ora ritiro</label>
+        <p-dropdown id="pickupTime"
+                    [options]="timeOptions"
+                    optionLabel="label" optionValue="value"
+                    placeholder="Seleziona ora"
+                    formControlName="pickupTime"></p-dropdown>
       </div>
 
       <div class="form-field">
-        <label for="dropoffDate">Data e ora riconsegna</label>
+        <label for="dropoffDate">Data riconsegna</label>
         <p-datePicker
           id="dropoffDate"
           formControlName="dropoffDate"
-          [showTime]="true"
-          [minDate]="pickupDate"
-          [appendTo]="'body'"
+          [minDate]="bookingForm.value.pickupDate || today"
           dateFormat="yy-mm-dd"
-          hourFormat="24"
           [showIcon]="true"
           [readonlyInput]="true"
-          (onSelect)="onDateSelect($event, 'dropoff')"
-          (onInput)="onDateInput($event, 'dropoff')"
           placeholder="Seleziona data"
         ></p-datePicker>
+      </div>
+      <div class="form-field">
+        <label for="dropoffTime">Ora riconsegna</label>
+        <p-dropdown
+          id="dropoffTime"
+          [options]="dropoffTimeOptions"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Seleziona ora"
+          formControlName="dropoffTime"
+        ></p-dropdown>
       </div>
 
       <div class="form-actions">

@@ -12,9 +12,8 @@ import {forkJoin} from 'rxjs';
 import { delay, finalize } from 'rxjs/operators';
 import {NotificationService} from '../../services/notification.service';
 
-interface ReservationStep {
-  label: string;
-}
+interface TimeOption { label: string; value: string; }
+interface ReservationStep { label: string; }
 
 @Component({
   selector: 'app-booking',
@@ -43,6 +42,9 @@ export class BookingComponent implements OnInit{
   insurances: Insurance[] = [];
   accessories: Accessory[] = [];
   today: Date = new Date();
+  tomorrow: Date = new Date();
+  timeOptions: TimeOption[] = [];
+  dropoffTimeOptions: TimeOption[] = [];
 
   bookingForm: FormGroup;
 
@@ -62,8 +64,10 @@ export class BookingComponent implements OnInit{
       ],
       pickupLocation: [null, Validators.required],
       dropoffLocation: [null, Validators.required],
-      pickupDate: [null, Validators.required],
-      dropoffDate: [null, Validators.required],
+      pickupDate: [ null, Validators.required ],
+      pickupTime: [ null, Validators.required ],
+      dropoffDate: [ null, Validators.required ],
+      dropoffTime: [ null, Validators.required ],
       extraLocationFee: [false],
       // STEP 2
       bikeType: [null, Validators.required],
@@ -76,7 +80,36 @@ export class BookingComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.bookingForm.get('dropoffDate')!.disable();
+    this.bookingForm.get('dropoffTime')!.disable();
+    this.bookingForm.get('pickupDate')!.valueChanges.subscribe(date => {
+      if (date) {
+        this.bookingForm.get('dropoffDate')!.enable();
+      } else {
+        this.bookingForm.get('dropoffDate')!.disable();
+        this.bookingForm.get('dropoffDate')!.reset();
+        this.bookingForm.get('dropoffTime')!.disable();
+        this.bookingForm.get('dropoffTime')!.reset();
+      }
+    });
+    this.bookingForm.get('dropoffDate')!.valueChanges.subscribe(date => {
+      if (date) {
+        this.bookingForm.get('dropoffTime')!.enable();
+      } else {
+        this.bookingForm.get('dropoffTime')!.disable();
+        this.bookingForm.get('dropoffTime')!.reset();
+      }
+    });
+
+    for (let h = 9; h <= 18; h++) {
+      const hh = h.toString().padStart(2, '0');
+      this.timeOptions.push({ label: `${hh}:00`, value: `${hh}:00` });
+    }
+    this.dropoffTimeOptions = [];
     this.today.setHours(0, 0, 0, 0);
+    this.tomorrow = new Date(this.today);
+    this.tomorrow.setDate(this.today.getDate() + 1);
+
     forkJoin({
       locs: this.bookingSrv.getLocations(),
       types: this.bookingSrv.getBikeTypes(),
@@ -96,6 +129,15 @@ export class BookingComponent implements OnInit{
         error: err => {
           console.error('Errore caricamento dati:', err);
         }
+      });
+    this.bookingForm.get('pickupTime')!
+      .valueChanges
+      .subscribe((time: string) => {
+        this.bookingForm.get('dropoffTime')!.reset();
+        const pickedHour = Number(time.split(':')[0]);
+        this.dropoffTimeOptions = this.timeOptions.filter(opt =>
+          Number(opt.value.split(':')[0]) > pickedHour
+        );
       });
     this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
       this.pickupDate = value;
@@ -124,11 +166,14 @@ export class BookingComponent implements OnInit{
   }
 
   getTotalPrice(bike: Bike): number {
-    if (this.halfDays === 0) {
-      return 0;
-    }
+    const hd = this.halfDays;
     const priceHalf = (bike.bikeType as BikeType).PriceHalfDay;
-    return priceHalf * this.halfDays;
+
+    if (hd >= 1) {
+      return priceHalf * hd;
+    } else {
+      return priceHalf;
+    }
   }
 
   resetBikeSelection(): void {
@@ -193,6 +238,8 @@ export class BookingComponent implements OnInit{
         this.bookingForm.get('pickupLocation')!.valid &&
         this.bookingForm.get('dropoffLocation')!.valid &&
         this.bookingForm.get('pickupDate')!.valid &&
+        this.bookingForm.get('pickupTime')!.valid &&
+        this.bookingForm.get('dropoffTime')!.valid &&
         this.bookingForm.get('dropoffDate')!.valid;
       return this.isLoggedIn
         ? baseValid
@@ -250,34 +297,6 @@ export class BookingComponent implements OnInit{
     }
   }
 
-  onDateSelect(selectedDate: Date, type: 'pickup' | 'dropoff'): void {
-    if (selectedDate) {
-      this.normalizeToHourOnly(selectedDate, type);
-    }
-  }
-
-  onDateInput(event: any, type: 'pickup' | 'dropoff'): void {
-    const inputDate = event.target.value;
-    if (inputDate) {
-      const date = new Date(inputDate);
-      if (!isNaN(date.getTime())) {
-        this.normalizeToHourOnly(date, type);
-      }
-    }
-  }
-
-  private normalizeToHourOnly(date: Date, type: 'pickup' | 'dropoff'): void {
-    const utcDate = new Date(date.getTime());
-    utcDate.setUTCMilliseconds(0);
-    utcDate.setUTCSeconds(0);
-    utcDate.setUTCMinutes(0);
-    if (type === 'pickup') {
-      this.bookingForm.patchValue({ pickupDate: utcDate });
-    } else {
-      this.bookingForm.patchValue({ dropoffDate: utcDate });
-    }
-  }
-
   submit(): void {
     this.loading = true;
     if (this.bookingForm.invalid) {
@@ -286,15 +305,27 @@ export class BookingComponent implements OnInit{
 
     const fv = this.bookingForm.value;
 
+    const puDate: Date = new Date(fv.pickupDate);
+    const [puH, puM] = fv.pickupTime
+      .split(':')
+      .map((n: string) => Number(n));
+    puDate.setHours(puH, puM, 0, 0);
+
+    const doDate: Date = new Date(fv.dropoffDate);
+    const [doH, doM] = fv.dropoffTime
+      .split(':')
+      .map((n: string) => Number(n));
+    doDate.setHours(doH, doM, 0, 0);
+
     const extraFee = fv.extraLocationFee ? 10 : 0;
 
     const totalPrice = this.getTotalPriceByInsuranceAndAccessories();
 
     const payload: Booking = {
       guestEmail: fv.guestEmail,
-      pickupDate: fv.pickupDate,
+      pickupDate: puDate,
       pickupLocation: fv.pickupLocation,
-      dropoffDate: fv.dropoffDate,
+      dropoffDate: doDate,
       dropoffLocation: fv.dropoffLocation,
       items: fv.bikeIds,
       accessories: fv.accessories,
@@ -327,6 +358,4 @@ export class BookingComponent implements OnInit{
       }
     });
   }
-
-  protected readonly Object = Object;
 }
