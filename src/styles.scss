@@ -40,13 +40,14 @@ body {
   width: 100%;
 }
 
-//.p-inputtext:disabled {
-//  background: none !important;
-//}
-//
-//:host {
-//  --p-form-field-disabled-background: #ffffff !important;
-//}
+.p-inputtext:disabled {
+  background: none !important;
+}
+
+:root {
+  --p-select-disabled-background: #ffffff !important;
+}
+
 
 .p-password-input {
   width: 26rem;

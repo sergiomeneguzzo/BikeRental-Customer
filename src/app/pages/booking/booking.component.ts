@@ -134,10 +134,21 @@ export class BookingComponent implements OnInit{
       .valueChanges
       .subscribe((time: string) => {
         this.bookingForm.get('dropoffTime')!.reset();
+        const pickupDate = this.bookingForm.get('pickupDate')!.value;
+        const dropoffDate = this.bookingForm.get('dropoffDate')!.value;
         const pickedHour = Number(time.split(':')[0]);
-        this.dropoffTimeOptions = this.timeOptions.filter(opt =>
-          Number(opt.value.split(':')[0]) > pickedHour
-        );
+        if (pickupDate && dropoffDate) {
+          const sameDay = new Date(pickupDate).toDateString() === new Date(dropoffDate).toDateString();
+          if (sameDay) {
+            this.dropoffTimeOptions = this.timeOptions.filter(opt =>
+              Number(opt.value.split(':')[0]) > pickedHour
+            );
+          } else {
+            this.dropoffTimeOptions = [...this.timeOptions];
+          }
+        } else {
+          this.dropoffTimeOptions = [...this.timeOptions];
+        }
       });
     this.bookingForm.get('pickupDate')?.valueChanges.subscribe((value: Date) => {
       this.pickupDate = value;
@@ -151,9 +162,27 @@ export class BookingComponent implements OnInit{
       this.pickupDate = value;
       this.resetBikeSelection();
     });
-    this.bookingForm.get('dropoffDate')?.valueChanges.subscribe((value: Date) => {
-      this.resetBikeSelection();
-    });
+    this.bookingForm.get('dropoffDate')!
+      .valueChanges
+      .subscribe((dropoffDate: Date) => {
+        this.bookingForm.get('dropoffTime')!.reset();
+        const pickupDate = this.bookingForm.get('pickupDate')!.value;
+        const pickupTime = this.bookingForm.get('pickupTime')!.value;
+        const pickedHour = Number(pickupTime?.split(':')[0]);
+        if (pickupDate && dropoffDate) {
+          const sameDay = new Date(pickupDate).toDateString() === new Date(dropoffDate).toDateString();
+          if (sameDay && pickupTime) {
+            this.dropoffTimeOptions = this.timeOptions.filter(opt =>
+              Number(opt.value.split(':')[0]) > pickedHour
+            );
+          } else {
+            this.dropoffTimeOptions = [...this.timeOptions];
+          }
+        } else {
+          this.dropoffTimeOptions = [...this.timeOptions];
+        }
+        this.resetBikeSelection();
+      });
     this.bookingForm.get('pickupLocation')?.valueChanges.subscribe(() => {
       this.resetBikeSelection();
     });
