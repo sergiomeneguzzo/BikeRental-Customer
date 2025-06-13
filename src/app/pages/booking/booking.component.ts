@@ -143,6 +143,14 @@ export class BookingComponent implements OnInit{
       this.pickupDate = value;
       this.resetBikeSelection();
     });
+    this.bookingForm.get('pickupTime')?.valueChanges.subscribe((value: Date) => {
+      this.pickupDate = value;
+      this.resetBikeSelection();
+    });
+    this.bookingForm.get('dropoffTime')?.valueChanges.subscribe((value: Date) => {
+      this.pickupDate = value;
+      this.resetBikeSelection();
+    });
     this.bookingForm.get('dropoffDate')?.valueChanges.subscribe((value: Date) => {
       this.resetBikeSelection();
     });
@@ -154,26 +162,30 @@ export class BookingComponent implements OnInit{
     });
   }
 
-  get halfDays(): number {
-    const pu: Date = this.bookingForm.get('pickupDate')!.value;
-    const doff: Date = this.bookingForm.get('dropoffDate')!.value;
-    if (!pu || !doff) {
-      return 0;
+  getTotalPrice(bike: Bike): number {
+    const durationHours = this.getBookingDurationInHours();
+    const pricePerHalfDay = bike.bikeType.PriceHalfDay;
+
+    let numberOfHalfDays = 1;
+
+    if (durationHours > 4) {
+      numberOfHalfDays = Math.ceil(durationHours / 4);
     }
-    const msDiff = doff.getTime() - pu.getTime();
-    const hours = msDiff / (1000 * 60 * 60);
-    return hours > 0 ? Math.ceil(hours / 4) : 0;
+    return pricePerHalfDay * numberOfHalfDays;
   }
 
-  getTotalPrice(bike: Bike): number {
-    const hd = this.halfDays;
-    const priceHalf = (bike.bikeType as BikeType).PriceHalfDay;
+  getBookingDurationInHours(): number {
+    const pickupDate = this.combineDateAndTime(this.bookingForm.value.pickupDate, this.bookingForm.value.pickupTime);
+    const dropoffDate = this.combineDateAndTime(this.bookingForm.value.dropoffDate, this.bookingForm.value.dropoffTime);
+    const diffMs = dropoffDate.getTime() - pickupDate.getTime();
+    return diffMs / (1000 * 60 * 60);
+  }
 
-    if (hd >= 1) {
-      return priceHalf * hd;
-    } else {
-      return priceHalf;
-    }
+  combineDateAndTime(date: Date, time: string): Date {
+    const [hours, minutes] = time.split(':').map(Number);
+    const combined = new Date(date);
+    combined.setHours(hours, minutes || 0, 0, 0);
+    return combined;
   }
 
   resetBikeSelection(): void {
