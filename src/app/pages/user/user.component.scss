@@ -336,3 +336,36 @@
 .btn-danger:hover {
   background: #c82333;
 }
+
+.booking-header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2rem 0 1rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  h2 {
+    margin: 0;
+  }
+
+  .toggle-bookings-btn {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-header-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .toggle-bookings-btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+}

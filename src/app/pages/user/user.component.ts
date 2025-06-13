@@ -17,6 +17,18 @@ export class UserComponent implements OnInit, OnDestroy{
   currentUser: User | null = null;
   userBookings: Booking[] = [];
   isLoading = true;
+  showPastBookings = false;
+
+  get filteredBookings(): Booking[] {
+    const today = new Date();
+    return this.userBookings.filter(b => {
+      const dropoff = new Date(b.dropoffDate);
+      return this.showPastBookings
+        ? dropoff <= today
+        : dropoff > today;
+    });
+  }
+
   private destroyed$ = new Subject<void>();
 
   showCancelModal = false;

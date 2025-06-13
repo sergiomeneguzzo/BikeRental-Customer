@@ -18,14 +18,29 @@
       </p>
       <p class="user-email">{{ currentUser.username }}</p>
     </div>
-    <h2>Le tue Prenotazioni</h2>
 
-    <div *ngIf="userBookings.length === 0" class="no-bookings-message">
-      <p>Non hai ancora prenotazioni.</p>
+    <div class="booking-header-wrapper">
+      <h2>Le tue Prenotazioni</h2>
+      <button
+        class="btn-secondary toggle-bookings-btn"
+        (click)="showPastBookings = !showPastBookings"
+      >
+        {{ showPastBookings
+        ? 'Prenotazioni correnti'
+        : 'Prenotazioni passate' }}
+      </button>
     </div>
 
-    <div *ngIf="userBookings.length > 0" class="bookings-list">
-      <div *ngFor="let booking of userBookings" class="booking-card">
+    <div *ngIf="filteredBookings.length === 0" class="no-bookings-message">
+      <p *ngIf="!showPastBookings">Non hai prenotazioni future.</p>
+      <p *ngIf="showPastBookings">Non hai prenotazioni passate.</p>
+    </div>
+
+    <div *ngIf="filteredBookings.length > 0" class="bookings-list">
+
+
+      <div *ngIf="filteredBookings.length > 0" class="bookings-list">
+      <div *ngFor="let booking of filteredBookings" class="booking-card">
         <div class="booking-header">
           <h3>Prenotazione:</h3>
           <span
