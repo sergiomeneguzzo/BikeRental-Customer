@@ -43,7 +43,6 @@
   top: 0;
   left: 0;
   text-transform: uppercase;
-
   color: #fff;
   font-size: 0.775rem;
   font-weight: 500;
@@ -102,6 +101,121 @@ a.button-sec-2:hover {
   color: #fff;
 }
 
+//ABOUT US
+.about-us-section {
+  padding: 60px 20px;
+}
+
+.about-us-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 40px;
+}
+
+.about-us-image-wrapper {
+  flex: 1;
+  min-width: 300px;
+}
+
+.about-us-image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.about-us-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-us-pre-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.about-us-title {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-us-text {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+//EVENTS
+.events-section {
+  position: relative;
+  width: 100%;
+  min-height: 80vh;
+  background-image: url('https://rideout.amsterdam/wp-content/uploads/2024/01/gt.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  margin-bottom: 5rem;
+  box-sizing: border-box;
+}
+
+.events-inset-image {
+  position: absolute;
+  top: 1rem;
+  right: 2.5rem;
+  width: 35%;
+  max-width: 450px;
+  height: auto;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.events-bottom-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 5rem 2.5rem 2.5rem;
+  color: #fff;
+}
+
+.events-bottom-content .events-title {
+  font-size: 2.2rem;
+  font-weight: 500;
+  margin: 0;
+  margin-bottom: 0.5rem;
+  max-width: 80%;
+}
+
+.events-bottom-content .events-subline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.events-bottom-content .events-text {
+  font-size: 1rem;
+  font-weight: 300;
+  margin: 0;
+  flex-grow: 1;
+  max-width: 75%;
+}
+//////////
+
 .map-cta {
   width: 100%;
 }
@@ -148,7 +262,61 @@ a.button-sec-2:hover {
   line-height: 1.2;
 }
 
-@media only screen and (min-width: 0px) and (max-width: 768px) {
+//EVENTS MOBILE
+@media only screen and (max-width: 768px) {
+  .events-section {
+    min-height: 70vh;
+    padding: 1.5rem;
+  }
+
+  .events-inset-image {
+    display: block;
+    width: 55%;
+    top: 0.8rem;
+    right: 1.5rem;
+  }
+
+  .events-bottom-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.5rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  .events-bottom-content .events-title {
+    font-size: 1.6rem;
+    line-height: 1.2;
+    margin-bottom: 0.7rem;
+    max-width: calc(100% - 40%);
+    text-align: left;
+  }
+
+  .events-bottom-content .events-subline {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .events-bottom-content .events-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1.2rem;
+    max-width: calc(100% - 40%);
+    text-align: left;
+  }
+
+  .events-bottom-content .button-sec-2 {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
+    align-self: flex-start;
+  }
+}
+//
+
+@media only screen and (max-width: 768px) {
   .hero-top {
     display: flex;
     padding: 8rem 0.65rem 2rem;
@@ -197,6 +365,29 @@ a.button-sec-2:hover {
     font-weight: 300;
   }
 
+  //ABOUT US MOBILE
+  .about-us-section {
+    padding: 40px 20px;
+  }
+
+  .about-us-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .about-us-image-wrapper {
+    min-width: unset;
+  }
+
+  .about-us-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .about-us-text {
+    font-size: 1rem;
+  }
+  //
 
   .map-cta__inner {
     flex-direction: column;
