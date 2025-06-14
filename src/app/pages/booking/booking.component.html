@@ -148,12 +148,12 @@
               {{ bike.bikeType }}
             </h5>
             <p><strong>Seriale:</strong> {{ bike.serialNumber }}</p>
-            <p><strong>Stato:</strong>
-              <span class="status-indicator">
-    <span class="status-dot" ></span>
-                {{ getStatusText(bike.status) }}
-  </span>
-            </p>
+<!--            <p><strong>Stato:</strong>-->
+<!--              <span class="status-indicator">-->
+<!--    <span class="status-dot" ></span>-->
+<!--                {{ getStatusText(bike.status) }}-->
+<!--  </span>-->
+<!--            </p>-->
             <p><strong>Taglia:</strong>
               <span *ngFor="let s of bike.sizes; let i = index">
     {{ s.sizeLabel }} <small>({{ s.minHeightCm }}–{{ s.maxHeightCm }}cm)</small>{{ i < bike.sizes.length - 1 ? ', ' : '' }}
