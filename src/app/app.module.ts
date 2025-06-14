@@ -41,6 +41,7 @@ import { EditBookingComponent } from './pages/booking/edit-booking/edit-booking.
 import { InputNumber } from "primeng/inputnumber";
 import { DatePicker } from 'primeng/datepicker';
 import { Tooltip } from 'primeng/tooltip';
+import { SectionPricesComponent } from './shared/sections/section-prices/section-prices.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { Tooltip } from 'primeng/tooltip';
     UserComponent,
     ConfirmationModalComponent,
     EditBookingComponent,
+    SectionPricesComponent,
   ],
   imports: [
     BrowserModule,

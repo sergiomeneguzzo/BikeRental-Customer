@@ -4,7 +4,7 @@
       <img src="/logo.webp" alt="Raido logo" class="logo-img" />
     </a>
     <ul class="nav-list">
-      <li class="nav-item"><a routerLink="/about" class="nav-link">Chi Siamo</a></li>
+      <li class="nav-item"><a routerLink="/about" class="nav-link">Noi</a></li>
       <li class="nav-item"><a routerLink="/booking" class="nav-link">Prenota</a></li>
       <li class="nav-item"><a routerLink="/events" class="nav-link">Listino</a></li>
       <li class="nav-item" *ngIf="!auth.isLoggedIn()">
@@ -37,7 +37,7 @@
 
 <div class="menu-mo" #menuMo>
   <ul>
-    <li><a routerLink="/about" (click)="toggleMobileMenu()">Chi Siamo</a></li>
+    <li><a routerLink="/about" (click)="toggleMobileMenu()">Noi</a></li>
     <li><a routerLink="/booking" (click)="toggleMobileMenu()">Prenota</a></li>
     <li><a routerLink="/events" (click)="toggleMobileMenu()">Listino</a></li>
     <li *ngIf="!auth.isLoggedIn()"><a routerLink="/login" (click)="toggleMobileMenu()">Accedi</a></li>
