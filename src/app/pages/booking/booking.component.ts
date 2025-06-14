@@ -8,7 +8,7 @@ import {Accessory} from '../../interfaces/accessories';
 import {Insurance} from '../../interfaces/insurance';
 import {Booking} from '../../interfaces/booking';
 import {Router} from '@angular/router';
-import {forkJoin} from 'rxjs';
+import {catchError, forkJoin, of} from 'rxjs';
 import { delay, finalize } from 'rxjs/operators';
 import {NotificationService} from '../../services/notification.service';
 
@@ -236,15 +236,30 @@ export class BookingComponent implements OnInit{
       this.filteredBikes = [];
       return;
     }
+
     this.bookingSrv
       .getBikes(locId, pu, doff)
+      .pipe(
+        catchError(err => {
+          console.error('getBikes error', err);
+          return of([] as Bike[]);
+        })
+      )
       .subscribe(all => {
-        this.filteredBikes = all.filter(b => {
-          const bt = typeof b.bikeType === 'string' ? b.bikeType : (b.bikeType)._id;
-          return bt === typeId;
-        });
+        if (Array.isArray(all)) {
+          this.filteredBikes = all.filter(b => {
+            const bt = typeof b.bikeType === 'string'
+              ? b.bikeType
+              : (b.bikeType as BikeType)._id;
+            return bt === typeId;
+          });
+        } else {
+          console.warn('getBikes ha restituito non-array:', all);
+          this.filteredBikes = [];
+        }
       });
   }
+
 
   addBike(bikeId: string) {
     const bike = this.filteredBikes.find(b => b.id === bikeId);

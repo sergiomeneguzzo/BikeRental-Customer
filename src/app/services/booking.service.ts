@@ -72,8 +72,7 @@ export class BookingService {
     if (end)   params = params.set('end',   end.toISOString());
 
     return this.http
-      .get<{ bikes: BikeWithBusy[] }>(`${apiUrl}/bikes`, { params })
-      .pipe(map(res => res.bikes));
+      .get<BikeWithBusy[]>(`${apiUrl}/bikes`, { params });
   }
 
   getUnavailableDatesByLocation(locationId: string): Observable<string[]> {
