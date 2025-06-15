@@ -68,12 +68,11 @@ export class BookingService {
     end?: Date
   ): Observable<BikeWithBusy[]> {
     let params = new HttpParams().set('locationId', locationId);
-    if (start) params = params.set('start', start.toISOString());
-    if (end)   params = params.set('end',   end.toISOString());
-
-    return this.http
-      .get<BikeWithBusy[]>(`${apiUrl}/bikes`, { params });
+    if (start) params = params.set('pickupDate', start.toISOString());
+    if (end)   params = params.set('dropoffDate', end.toISOString());
+    return this.http.get<BikeWithBusy[]>(`${apiUrl}/bikes`, { params });
   }
+
 
   getUnavailableDatesByLocation(locationId: string): Observable<string[]> {
     let params = new HttpParams().set('locationId', locationId);
