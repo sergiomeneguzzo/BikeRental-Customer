@@ -12,13 +12,6 @@
   letter-spacing: -0.04em;
 }
 
-.col-1 h1 {
-  font-size: 7.125vw;
-  line-height: 3.75vw;
-  font-weight: 500;
-  color: #000;
-}
-
 .hero-top col-2 {
   padding: 4.1666666667vw 0vw 3.3333333333vw;
   min-height: 35vw;
@@ -179,7 +172,7 @@ a.button-sec-2:hover {
   width: 35%;
   max-width: 450px;
   height: auto;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .events-bottom-content {
@@ -213,6 +206,7 @@ a.button-sec-2:hover {
   flex-grow: 1;
   max-width: 75%;
 }
+
 //////////
 
 .map-cta {
@@ -313,6 +307,7 @@ a.button-sec-2:hover {
     align-self: flex-start;
   }
 }
+
 //
 
 @media only screen and (max-width: 768px) {
@@ -386,6 +381,7 @@ a.button-sec-2:hover {
   .about-us-text {
     font-size: 1rem;
   }
+
   //
 
   .map-cta__inner {
