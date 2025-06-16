@@ -392,7 +392,6 @@ export class BookingComponent implements OnInit{
       paymentMethod: fv.paymentMethod
     };
 
-    console.log('Payload reservation:', payload);
     this.bookingSrv.createReservation(payload).subscribe({
       next: reservation => {
         this.loading = false;

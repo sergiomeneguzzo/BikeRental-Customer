@@ -78,7 +78,6 @@ export class AuthService {
       next: (user) => {
         this._currentUser$.next(user);
         this._loading$.next(false);
-        console.log('user log: ', user);
       },
       error: (err) => {
         this._loading$.next(false);

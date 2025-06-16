@@ -74,7 +74,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
           'https://static.vecteezy.com/ti/vettori-gratis/p1/2318271-icona-profilo-utente-vettoriale.jpg';
       }
 
-      console.log('Credenziali', this.registerForm.value);
       this.authSrv
         .register(
           firstName!,

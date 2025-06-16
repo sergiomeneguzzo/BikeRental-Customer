@@ -72,8 +72,6 @@ export class UserComponent implements OnInit, OnDestroy{
         next: (bookings) => {
           this.userBookings = bookings;
           this.isLoading = false;
-          console.log('User info:', this.currentUser);
-          console.log('User bookings:', this.userBookings);
         }
       });
   }
