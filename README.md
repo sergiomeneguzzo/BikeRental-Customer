@@ -1,59 +1,36 @@
-# Frontend
+#  BikeRental-Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+Frontend application for the **BikeRental** system, developed using **Angular 19** with modern UI libraries and smooth animations.  
+This project complements the backend API to provide users and operators with a seamless, responsive, and engaging web experience.
 
-## Development server
+---
 
-To start a local development server, run:
+## 📘 Project Overview
 
-```bash
-ng serve
-```
+The frontend serves as the interface for:
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- Customers to browse, book bikes with accessories and insurance  
+- Operators to manage bookings and inventory (via a protected backoffice)  
+- An attractive landing page showcasing the rental service with smooth animations and UX enhancements  
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🎯 Goals
 
-```bash
-ng generate component component-name
-```
+- Provide a modern, responsive user interface  
+- Implement smooth scroll and engaging animations for a polished UX  
+- Use reusable, accessible UI components  
+- Maintain code quality and scalability with Angular best practices  
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+---
 
-```bash
-ng generate --help
-```
+## 🧱 Tech Stack
 
-## Building
+- **Angular 19** (latest stable version)  
+- **Tailwind CSS** for utility-first styling  
+- **PrimeNG** component library for Angular (version compatible with Angular 19)  
+- **Lenis** for smooth scrolling effects  
+- **GSAP (GreenSock Animation Platform)** for complex animations on the landing page  
+- **TypeScript**  
 
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+---
