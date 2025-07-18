@@ -5,7 +5,7 @@ This project complements the backend API to provide users and operators with a s
 
 ---
 
-## 📘 Project Overview
+## Project Overview
 
 The frontend serves as the interface for:
 
@@ -15,7 +15,7 @@ The frontend serves as the interface for:
 
 ---
 
-## 🎯 Goals
+## Goals
 
 - Provide a modern, responsive user interface  
 - Implement smooth scroll and engaging animations for a polished UX  
@@ -24,7 +24,7 @@ The frontend serves as the interface for:
 
 ---
 
-## 🧱 Tech Stack
+## Tech Stack
 
 - **Angular 19** (latest stable version)  
 - **Tailwind CSS** for utility-first styling  
